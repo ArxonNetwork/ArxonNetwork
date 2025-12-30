@@ -102,25 +102,43 @@
 const ip = "ArxonNetwork.aternos.me";
 const port = "20659";
 
-fetch(`https://api.mcstatus.io/v2/status/java/${ip}:${port}`)
-  .then(res => res.json())
-  .then(data => {
-    const statusEl = document.getElementById("server-status");
-    const playersEl = document.getElementById("players");
+async function checkServer() {
+  const statusEl = document.getElementById("server-status");
+  const playersEl = document.getElementById("players");
 
-    if (data.online) {
-      statusEl.innerHTML = "🟢 Sunucu Açık";
-      statusEl.style.color = "#00ff88";
-      playersEl.innerHTML = `👥 Oyuncular: ${data.players.online} / ${data.players.max}`;
-    } else {
-      statusEl.innerHTML = "🔴 Sunucu Kapalı";
-      statusEl.style.color = "#ff4c4c";
-      playersEl.innerHTML = "";
+  try {
+    const res = await fetch(
+      `https://api.mcstatus.io/v2/status/java/${ip}:${port}`,
+      { cache: "no-store" }
+    );
+
+    if (!res.ok) throw new Error("Offline");
+
+    const data = await res.json();
+
+    // 🔥 KRİTİK KONTROL
+    // Sunucu açık sayılması için:
+    // - online true olacak
+    // - ping olacak
+    if (data.online !== true || !data.latency) {
+      throw new Error("Offline");
     }
-  })
-  .catch(() => {
-    document.getElementById("server-status").innerHTML = "⚠️ Durum alınamadı";
-  });
+
+    statusEl.innerHTML = "🟢 Sunucu AÇIK";
+    statusEl.style.color = "#00ff88";
+
+    playersEl.innerHTML =
+      `👥 Oyuncular: ${data.players.online} / ${data.players.max}`;
+
+  } catch (e) {
+    statusEl.innerHTML = "🔴 Sunucu KAPALI";
+    statusEl.style.color = "#ff4c4c";
+    playersEl.innerHTML = "";
+  }
+}
+
+checkServer();
+setInterval(checkServer, 30000); // 30 saniyede bir yeniler
 
 function copyIP() {
   navigator.clipboard.writeText("ArxonNetwork.aternos.me:20659");
