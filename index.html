@@ -3,22 +3,64 @@
 <head>
   <meta charset="UTF-8">
   <title>ArxonMC</title>
+
+  <style>
+    body {
+      background: #0e0e0e;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 40px;
+    }
+
+    h1 {
+      color: #7b6cff;
+      margin-bottom: 30px;
+    }
+
+    .card {
+      background: #1a1a1a;
+      padding: 25px;
+      border-radius: 14px;
+      width: 320px;
+      margin: auto;
+      box-shadow: 0 0 20px rgba(123,108,255,0.3);
+    }
+
+    .status {
+      margin-top: 15px;
+      font-size: 18px;
+    }
+
+    button {
+      background: #7b6cff;
+      color: white;
+      border: none;
+      padding: 12px 22px;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    button:hover {
+      background: #5f52ff;
+    }
+  </style>
 </head>
+
 <body>
 
 <h1>🔥 ArxonMC Network 🔥</h1>
 
-<p>IP: <b>ArxonNetwork.aternos.me:20659</b></p>
+<div class="card">
+  <p><b>IP:</b> ArxonNetwork.aternos.me:20659</p>
 
-<!-- SUNUCU DURUMU -->
-<div id="server-status" style="margin-top:20px;">
-  <b>Sunucu Durumu:</b>
-  <span id="status-text">Kontrol ediliyor...</span><br>
-  Oyuncu Sayısı: <span id="player-count">-</span>
-</div>
+  <div class="status">
+    <b>Sunucu:</b> <span id="status-text">Kontrol ediliyor...</span><br>
+    Oyuncu: <span id="player-count">-</span>
+  </div>
 
-<!-- MAGAZA BUTONU -->
-<div style="margin-top:30px;">
   <a href="magaza.html">
     <button>🛒 Mağaza</button>
   </a>
@@ -34,22 +76,18 @@ async function checkServer() {
       `https://api.mcstatus.io/v2/status/java/${ip}:${port}`,
       { cache: "no-store" }
     );
-
     const data = await res.json();
 
     if (data.online === true) {
-      document.getElementById("status-text").innerHTML =
-        "🟢 <b>AÇIK</b>";
+      document.getElementById("status-text").innerHTML = "🟢 AÇIK";
       document.getElementById("player-count").innerText =
         data.players.online + " / " + data.players.max;
     } else {
-      document.getElementById("status-text").innerHTML =
-        "🔴 <b>KAPALI</b>";
+      document.getElementById("status-text").innerHTML = "🔴 KAPALI";
       document.getElementById("player-count").innerText = "0";
     }
-  } catch (err) {
-    document.getElementById("status-text").innerHTML =
-      "🔴 <b>KAPALI</b>";
+  } catch {
+    document.getElementById("status-text").innerHTML = "🔴 KAPALI";
     document.getElementById("player-count").innerText = "0";
   }
 }
