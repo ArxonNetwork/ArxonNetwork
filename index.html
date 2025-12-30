@@ -2,26 +2,99 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8">
-  <title>ArxonMC</title>
+  <title>ArxonNetwork</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      height: 100vh;
+      background: radial-gradient(circle at top, #1e3c72, #0f2027);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+    }
+
+    .container {
+      background: rgba(0,0,0,0.45);
+      padding: 40px;
+      border-radius: 20px;
+      text-align: center;
+      width: 360px;
+      box-shadow: 0 0 40px rgba(0,0,0,0.6);
+    }
+
+    h1 {
+      font-size: 42px;
+    }
+
+    p {
+      opacity: 0.8;
+      margin-bottom: 20px;
+    }
+
+    #server-status {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    #players {
+      margin-bottom: 15px;
+    }
+
+    .ip-box {
+      background: rgba(255,255,255,0.1);
+      padding: 15px;
+      border-radius: 12px;
+      cursor: pointer;
+      margin-bottom: 20px;
+    }
+
+    .ip-box:hover {
+      background: rgba(255,255,255,0.2);
+    }
+
+    .buttons a {
+      display: block;
+      margin: 10px 0;
+      padding: 12px;
+      background: linear-gradient(135deg, #00c6ff, #0072ff);
+      color: black;
+      text-decoration: none;
+      border-radius: 30px;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    .buttons a:hover {
+      transform: scale(1.05);
+    }
+  </style>
 </head>
 <body>
 
-<h1>🔥 ArxonMC Network 🔥</h1>
+<div class="container">
+  <h1>ArxonNetwork</h1>
+  <p>Türkiye'nin en sağlam Minecraft sunucusu</p>
 
-<p>IP: <b>ArxonNetwork.aternos.me:20659</b></p>
+  <div id="server-status">Kontrol ediliyor...</div>
+  <div id="players"></div>
 
-<!-- SUNUCU DURUMU -->
-<div id="server-status" style="margin-top:20px;">
-  <b>Sunucu Durumu:</b>
-  <span id="status-text">Kontrol ediliyor...</span><br>
-  Oyuncu Sayısı: <span id="player-count">-</span>
-</div>
+  <div class="ip-box" onclick="copyIP()">
+    IP: <span>ArxonNetwork.aternos.me:20659</span><br>
+    <small>(tıkla kopyala)</small>
+  </div>
 
-<!-- MAGAZA BUTONU -->
-<div style="margin-top:30px;">
-  <a href="magaza.html">
-    <button>🛒 Mağaza</button>
-  </a>
+  <div class="buttons">
+    <a href="https://discord.gg/linkin" target="_blank">Discord</a>
+    <a href="magaza.html">Mağaza</a>
+  </div>
 </div>
 
 <script>
@@ -29,33 +102,43 @@ const ip = "ArxonNetwork.aternos.me";
 const port = "20659";
 
 async function checkServer() {
+  const statusEl = document.getElementById("server-status");
+  const playersEl = document.getElementById("players");
+
   try {
     const res = await fetch(
       `https://api.mcstatus.io/v2/status/java/${ip}:${port}`,
       { cache: "no-store" }
     );
 
+    if (!res.ok) throw new Error("API hata");
+
     const data = await res.json();
 
     if (data.online === true) {
-      document.getElementById("status-text").innerHTML =
-        "🟢 <b>AÇIK</b>";
-      document.getElementById("player-count").innerText =
-        data.players.online + " / " + data.players.max;
+      statusEl.innerHTML = "🟢 Sunucu AÇIK";
+      statusEl.style.color = "#00ff88";
+
+      playersEl.innerHTML =
+        `👥 Oyuncular: ${data.players.online} / ${data.players.max}`;
     } else {
-      document.getElementById("status-text").innerHTML =
-        "🔴 <b>KAPALI</b>";
-      document.getElementById("player-count").innerText = "0";
+      throw new Error("Offline");
     }
-  } catch (err) {
-    document.getElementById("status-text").innerHTML =
-      "🔴 <b>KAPALI</b>";
-    document.getElementById("player-count").innerText = "0";
+
+  } catch (e) {
+    statusEl.innerHTML = "🔴 Sunucu KAPALI";
+    statusEl.style.color = "#ff4c4c";
+    playersEl.innerHTML = "";
   }
 }
 
 checkServer();
-setInterval(checkServer, 15000);
+setInterval(checkServer, 20000); // 20 saniye
+
+function copyIP() {
+  navigator.clipboard.writeText("ArxonNetwork.aternos.me:20659");
+  alert("IP kopyalandı");
+}
 </script>
 
 </body>
