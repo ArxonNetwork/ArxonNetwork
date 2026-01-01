@@ -43,35 +43,44 @@ button {
   <input id="target" placeholder="Kullanıcı adı">
   <input id="credit" type="number" placeholder="Verilecek kredi">
 
-  <button onclick="giveCredit()">Kredi Ver</button>
-  <button onclick="banUser()">Banla</button>
-  <button onclick="logout()">Çıkış Yap</button>
+  <button onclick="giveCredit()">💳 Kredi Ver</button>
+  <button onclick="banUser()">⛔ Banla</button>
+  <button onclick="logout()">🚪 Çıkış Yap</button>
 </div>
 
 <script>
-const admins = ["Syvex", "Admin"];
+// SADECE BUNLAR ADMİN
+const adminList = ["syvex", "mehmety3232"];
+
 const currentUser = localStorage.getItem("loginUser");
 
-if (!currentUser || !adminList.includes(currentUser)) {
+// admin kontrol
+if (!currentUser || !adminList.includes(currentUser.toLowerCase())) {
   location.href = "index.html";
 }
 
+// kredi ver
 function giveCredit() {
   const u = document.getElementById("target").value;
   const c = Number(document.getElementById("credit").value);
+
+  if (!u || !c) return alert("Alanları doldur");
 
   const raw = localStorage.getItem("user_" + u);
   if (!raw) return alert("Kullanıcı yok");
 
   const data = JSON.parse(raw);
-  data.credit += c;
+  data.credit = (data.credit || 0) + c;
 
   localStorage.setItem("user_" + u, JSON.stringify(data));
   alert("Kredi verildi");
 }
 
+// banla
 function banUser() {
   const u = document.getElementById("target").value;
+  if (!u) return alert("Kullanıcı adı yaz");
+
   const raw = localStorage.getItem("user_" + u);
   if (!raw) return alert("Kullanıcı yok");
 
@@ -82,6 +91,7 @@ function banUser() {
   alert("Kullanıcı banlandı");
 }
 
+// çıkış
 function logout() {
   localStorage.removeItem("loginUser");
   location.href = "login.html";
