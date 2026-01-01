@@ -177,6 +177,17 @@ checkServer();
 setInterval(checkServer, 2000); // ⏱️ 2 saniye
 </script>
 
+<script>
+const loggedUser = localStorage.getItem("loginUser");
+
+if (loggedUser) {
+  const loginBtn = document.getElementById("loginBtn");
+  const registerBtn = document.getElementById("registerBtn");
+
+  if (loginBtn) loginBtn.style.display = "none";
+  if (registerBtn) registerBtn.style.display = "none";
+}
+</script>
 
 </body>
 </html>
