@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>Kredi Yükle | ArxonMC</title>
+
+<style>
+body {
+  background: #0f2027;
+  color: white;
+  font-family: Arial;
+  text-align: center;
+  padding: 40px;
+}
+
+.pack {
+  background: rgba(0,0,0,0.5);
+  padding: 25px;
+  border-radius: 16px;
+  margin: 15px auto;
+  width: 280px;
+}
+
+button {
+  padding: 10px 20px;
+  border-radius: 20px;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  background: #00c6ff;
+}
+</style>
+</head>
+
+<body>
+
+<h1>💳 Kredi Yükle</h1>
+
+<div class="pack">
+  <h2>50 Kredi</h2>
+  <p>₺50</p>
+  <button onclick="buyCredit(50, 'SHOPIER_LINK_50')">Satın Al</button>
+</div>
+
+<div class="pack">
+  <h2>100 Kredi</h2>
+  <p>₺90</p>
+  <button onclick="buyCredit(100, 'SHOPIER_LINK_100')">Satın Al</button>
+</div>
+
+<div class="pack">
+  <h2>250 Kredi</h2>
+  <p>₺200</p>
+  <button onclick="buyCredit(250, 'SHOPIER_LINK_250')">Satın Al</button>
+</div>
+
+<script>
+const user = localStorage.getItem("loginUser");
+if (!user) {
+  alert("Giriş yapmadan kredi alamazsın");
+  location.href = "login.html";
+}
+
+function buyCredit(amount, link) {
+  localStorage.setItem("pendingCredit", amount);
+  window.open(link, "_blank");
+
+  alert("Ödemeyi yaptıktan sonra bu sayfaya geri dönüp 'Kredi Yükle'ye bas");
+}
+</script>
+
+<br><br>
+<button onclick="claimCredit()">💰 Kredi Yükle</button>
+
+<script>
+function claimCredit() {
+  const amount = Number(localStorage.getItem("pendingCredit"));
+  if (!amount) return alert("Bekleyen ödeme yok");
+
+  const raw = localStorage.getItem("user_" + user);
+  const data = JSON.parse(raw);
+
+  data.credit += amount;
+
+  localStorage.setItem("user_" + user, JSON.stringify(data));
+  localStorage.removeItem("pendingCredit");
+
+  alert(amount + " kredi hesabına yüklendi 🔥");
+}
+</script>
+
+</body>
+</html>
