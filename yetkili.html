@@ -55,10 +55,7 @@ const adminList = ["amsiken","amsiken"];
 
 const currentUser = localStorage.getItem("loginUser");
 
-// admin kontrol
-if (!currentUser || !adminList.includes(currentUser.toLowerCase())) {
-  location.href = "index.html";
-}
+
 
 // kredi ver
 function giveCredit() {
