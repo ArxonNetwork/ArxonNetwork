@@ -1,113 +1,78 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <title>ArxonNetwork</title>
+<meta charset="UTF-8">
+<title>ArxonNetwork</title>
 
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: Arial, sans-serif;
-    }
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
 
-    body {
-      min-height: 100vh;
-      background: radial-gradient(circle at top, #1e3c72, #0f2027);
-      color: white;
-    }
+body {
+  min-height: 100vh;
+  background: radial-gradient(circle at top, #1e3c72, #0f2027);
+  color: white;
+}
 
-    /* 🔥 SAĞ ÜST KULLANICI PANELİ */
-    .top-buttons {
-      position: fixed;
-      top: 20px;
-      right: 25px;
-      display: none;
-      gap: 12px;
-      z-index: 9999;
-      align-items: center;
-    }
+/* 🔥 SAĞ ÜST PANEL */
+.top-buttons {
+  position: fixed;
+  top: 20px;
+  right: 25px;
+  display: none;
+  gap: 12px;
+  z-index: 9999;
+}
 
-    .top-buttons span {
-      padding: 10px 14px;
-      border-radius: 14px;
-      background: rgba(255,255,255,0.2);
-      font-weight: bold;
-    }
+.top-buttons span {
+  padding: 10px 14px;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.2);
+  font-weight: bold;
+}
 
-    .top-buttons a {
-      padding: 10px 16px;
-      border-radius: 14px;
-      text-decoration: none;
-      font-weight: bold;
-      color: black;
-      background: linear-gradient(135deg, #00c6ff, #0072ff);
-      transition: 0.25s;
-    }
+.top-buttons a {
+  padding: 10px 14px;
+  border-radius: 14px;
+  text-decoration: none;
+  font-weight: bold;
+  color: black;
+  background: linear-gradient(135deg, #00c6ff, #0072ff);
+}
 
-    .top-buttons a:hover {
-      transform: scale(1.08);
-    }
+/* 🔥 ORTA KUTU */
+.container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0,0,0,0.45);
+  padding: 40px;
+  border-radius: 20px;
+  text-align: center;
+  width: 360px;
+}
 
-    /* 🔥 ORTA KUTU */
-    .container {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: rgba(0,0,0,0.45);
-      padding: 40px;
-      border-radius: 20px;
-      text-align: center;
-      width: 360px;
-      box-shadow: 0 0 40px rgba(0,0,0,0.6);
-    }
-
-    h1 {
-      font-size: 42px;
-      margin-bottom: 5px;
-    }
-
-    p {
-      opacity: 0.8;
-      margin-bottom: 20px;
-    }
-
-    #server-status {
-      font-size: 20px;
-      font-weight: bold;
-      margin-bottom: 10px;
-    }
-
-    #players {
-      margin-bottom: 15px;
-    }
-
-    .ip-box {
-      background: rgba(255,255,255,0.1);
-      padding: 15px;
-      border-radius: 12px;
-      cursor: pointer;
-      margin-bottom: 20px;
-    }
-
-    .buttons a {
-      display: block;
-      margin: 10px 0;
-      padding: 12px;
-      background: linear-gradient(135deg, #00c6ff, #0072ff);
-      color: black;
-      text-decoration: none;
-      border-radius: 30px;
-      font-weight: bold;
-    }
-  </style>
+.buttons a {
+  display: block;
+  margin: 10px 0;
+  padding: 12px;
+  background: linear-gradient(135deg, #00c6ff, #0072ff);
+  color: black;
+  text-decoration: none;
+  border-radius: 30px;
+  font-weight: bold;
+}
+</style>
 </head>
 
 <body>
 
-<!-- 🔥 SAĞ ÜST PANEL -->
+<!-- 🔥 SAĞ ÜST KULLANICI PANELİ -->
 <div class="top-buttons" id="userPanel">
   <span id="userInfo"></span>
   <a id="adminBtn" href="yetkili.html" style="display:none;">Yetkili</a>
@@ -118,35 +83,21 @@
   <h1>ArxonNetwork</h1>
   <p>Türkiye'nin en sağlam Minecraft sunucusu</p>
 
-  <div id="server-status">Kontrol ediliyor...</div>
-  <div id="players"></div>
-
-  <div class="ip-box" onclick="copyIP()">
-    IP: <span>ArxonNetwork.aternos.me:20659</span><br>
-    <small>(tıkla kopyala)</small>
-  </div>
-
   <div class="buttons">
-    <a href="https://discord.gg/pwfbYdMg9m" target="_blank">Discord</a>
-    <a href="https://cinar-a.github.io/ArxonNetwork/magaza.html">Mağaza</a>
-    <a id="loginBtn" href="login.html">Login</a>
-    <a id="registerBtn" href="register.html">Register</a>
+    <a href="login.html" id="loginBtn">Login</a>
+    <a href="register.html" id="registerBtn">Register</a>
   </div>
 </div>
 
 <script>
-function copyIP() {
-  navigator.clipboard.writeText("ArxonNetwork.aternos.me:20659");
-  alert("IP kopyalandı");
-}
-</script>
-
-<script>
-const admins = ["Syvex", "MEHMETY3232"];
+const admins = ["syvex", "mehmety3232"];
 const currentUser = localStorage.getItem("loginUser");
+
+console.log("LOGIN USER:", currentUser);
 
 if (currentUser) {
   const raw = localStorage.getItem("user_" + currentUser);
+  console.log("USER DATA:", raw);
 
   if (raw) {
     const data = JSON.parse(raw);
@@ -155,10 +106,10 @@ if (currentUser) {
     document.getElementById("userInfo").innerText =
       "👤 " + currentUser + " | 💳 " + (data.credit || 0);
 
-    document.getElementById("loginBtn")?.remove();
-    document.getElementById("registerBtn")?.remove();
+    document.getElementById("loginBtn").remove();
+    document.getElementById("registerBtn").remove();
 
-    if (admins.includes(currentUser)) {
+    if (admins.includes(currentUser.toLowerCase())) {
       document.getElementById("adminBtn").style.display = "inline-block";
     }
   }
