@@ -1,113 +1,100 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <title>Login | ArxonNetwork</title>
+<meta charset="UTF-8">
+<title>ArxonNetwork | Login</title>
 
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: Arial, sans-serif;
-    }
+<style>
+body {
+  background: radial-gradient(circle at top, #1e3c72, #0f2027);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: Arial;
+  color: white;
+}
 
-    body {
-      min-height: 100vh;
-      background: radial-gradient(circle at top, #1e3c72, #0f2027);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      color: white;
-    }
+.box {
+  background: rgba(0,0,0,0.5);
+  padding: 35px;
+  border-radius: 18px;
+  width: 320px;
+  text-align: center;
+}
 
-    .login-box {
-      background: rgba(0,0,0,0.5);
-      padding: 35px;
-      border-radius: 20px;
-      width: 340px;
-      text-align: center;
-      box-shadow: 0 0 40px rgba(0,0,0,0.6);
-    }
+input {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 25px;
+  border: none;
+  outline: none;
+}
 
-    h1 {
-      margin-bottom: 20px;
-    }
+button {
+  width: 100%;
+  padding: 12px;
+  border-radius: 25px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  background: linear-gradient(135deg,#00c6ff,#0072ff);
+}
 
-    input {
-      width: 100%;
-      padding: 12px;
-      margin: 10px 0;
-      border-radius: 12px;
-      border: none;
-      outline: none;
-    }
-
-    button {
-      width: 100%;
-      padding: 12px;
-      margin-top: 15px;
-      border-radius: 30px;
-      border: none;
-      font-weight: bold;
-      cursor: pointer;
-      background: linear-gradient(135deg, #00c6ff, #0072ff);
-      transition: 0.3s;
-    }
-
-    button:hover {
-      transform: scale(1.05);
-    }
-
-    .back {
-      margin-top: 15px;
-      display: block;
-      color: #ccc;
-      text-decoration: none;
-      font-size: 14px;
-    }
-  </style>
+a {
+  color: #00c6ff;
+  text-decoration: none;
+  font-size: 14px;
+}
+</style>
 </head>
 
 <body>
 
-<div class="login-box">
-  <h1>Login</h1>
+<div class="box">
+  <h2>🔐 Giriş Yap</h2>
 
-  <input type="text" id="username" placeholder="Kullanıcı adı">
-  <input type="password" id="password" placeholder="Şifre">
+  <input id="username" placeholder="Kullanıcı Adı">
+  <input id="password" type="password" placeholder="Şifre">
 
   <button onclick="login()">Giriş Yap</button>
 
-  <a class="back" href="index.html">← Ana Sayfa</a>
+  <p style="margin-top:15px">
+    Hesabın yok mu? <a href="register.html">Kayıt Ol</a>
+  </p>
 </div>
 
 <script>
 function login() {
-  const user = document.getElementById("username").value;
-  const pass = document.getElementById("password").value;
+  const u = document.getElementById("username").value;
+  const p = document.getElementById("password").value;
 
-  if (user === "" || pass === "") {
-    alert("Boş bırakma lan");
+  const raw = localStorage.getItem("user_" + u);
+  if (!raw) return alert("Kullanıcı yok");
+
+  const data = JSON.parse(raw);
+
+  if (data.banned) {
+    alert("BANLANDIN ☠️");
     return;
   }
 
-  // fake login
-  localStorage.setItem("logged", "true");
-  localStorage.setItem("user", user);
+  if (data.password !== p) {
+    alert("Şifre yanlış");
+    return;
+  }
 
-  alert("Giriş başarılı");
-  window.location.href = "index.html";
+  localStorage.setItem("loginUser", u);
+
+  const yetkililer = ["Cinar", "Admin"];
+  if (yetkililer.includes(u)) {
+    location.href = "yetkili.html";
+  } else {
+    location.href = "index.html";
+  }
 }
 </script>
 
 </body>
 </html>
-<script src="auth.js"></script>
-<script>
-if (isLoggedIn()) {
-  console.log("Giriş yapan:", getUser());
-} else {
-  console.log("Misafir");
-}
-</script>
