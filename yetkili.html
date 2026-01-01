@@ -45,7 +45,7 @@ button {
 
   <button onclick="giveCredit()">💳 Kredi Ver</button>
   <button onclick="banUser()">⛔ Banla</button>
-  <button onclick="unbanUser()">⛔ Ban Acma</button>
+  <button onclick="unbanUser()">⛔ Ban Aç</button>
   <button onclick="logout()">🚪 Çıkış Yap</button>
 </div>
 
@@ -54,8 +54,6 @@ button {
 const adminList = ["amsiken","amsiken"];
 
 const currentUser = localStorage.getItem("loginUser");
-
-
 
 // kredi ver
 function giveCredit() {
@@ -87,6 +85,21 @@ function banUser() {
 
   localStorage.setItem("user_" + u, JSON.stringify(data));
   alert("Kullanıcı banlandı");
+}
+
+// ban aç
+function unbanUser() {
+  const u = document.getElementById("target").value;
+  if (!u) return alert("Kullanıcı adı yaz");
+
+  const raw = localStorage.getItem("user_" + u);
+  if (!raw) return alert("Kullanıcı yok");
+
+  const data = JSON.parse(raw);
+  data.banned = false;
+
+  localStorage.setItem("user_" + u, JSON.stringify(data));
+  alert("Kullanıcının banı kaldırıldı");
 }
 
 // çıkış
