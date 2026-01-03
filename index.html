@@ -128,7 +128,40 @@ function logout() {
   localStorage.removeItem("loginUser");
   location.reload();
 }
+<script>
+const SERVER_IP = "193.164.4.244";
+
+function checkServer() {
+  const statusEl = document.getElementById("serverStatus");
+  statusEl.innerText = "🔄 Kontrol ediliyor...";
+
+  fetch("https://api.mcsrvstat.us/2/" + SERVER_IP)
+    .then(res => res.json())
+    .then(data => {
+      if (!data.online) {
+        statusEl.innerText = "❌ Sunucu kapalı";
+        return;
+      }
+
+      const online = data.players.online || 0;
+      const max = data.players.max || "?";
+
+      statusEl.innerText =
+        "🛜 Sunucu açık | 👥 Oyuncu: " + online + "/" + max;
+    })
+    .catch(() => {
+      statusEl.innerText = "⚠️ API hatası, internet mi öldü?";
+    });
+}
+
+function copyIP() {
+  navigator.clipboard.writeText(SERVER_IP)
+    .then(() => {
+      alert("📋 IP kopyalandı: " + SERVER_IP);
+    });
+}
 </script>
+
 
 </body>
 </html>
