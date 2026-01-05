@@ -32,12 +32,19 @@ button {
   font-weight: bold;
   cursor: pointer;
 }
+
+#adminName {
+  margin-bottom: 15px;
+  font-weight: bold;
+  opacity: 0.9;
+}
 </style>
 </head>
 
 <body>
 
 <h2>👮 Yetkili Paneli</h2>
+<div id="adminName"></div>
 
 <div class="box">
   <input id="target" placeholder="Kullanıcı adı">
@@ -54,6 +61,15 @@ button {
 const adminList = ["amsiken","amsiken"];
 
 const currentUser = localStorage.getItem("loginUser");
+
+// admin kontrol
+if (!currentUser || !adminList.includes(currentUser.toLowerCase())) {
+  location.href = "index.html";
+}
+
+// giriş yapan yetkiliyi göster
+document.getElementById("adminName").innerText =
+  "👤 Giriş yapan yetkili: " + currentUser;
 
 // kredi ver
 function giveCredit() {
@@ -101,10 +117,7 @@ function unbanUser() {
   localStorage.setItem("user_" + u, JSON.stringify(data));
   alert("Kullanıcının banı kaldırıldı");
 }
-// admin kontrol
-if (!currentUser || !adminList.includes(currentUser.toLowerCase())) {
-  location.href = "index.html";
-}
+
 // çıkış
 function logout() {
   localStorage.removeItem("loginUser");
