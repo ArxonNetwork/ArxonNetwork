@@ -58,9 +58,11 @@ button {
 
 <script>
 // SADECE BUNLAR ADMİN
-const adminList = ["syvex","amsiken"];
+const admins = ["syvex", "mehmety3232"];
 
-const currentUser = localStorage.getItem("loginUser");
+if (admins.includes(currentUser.toLowerCase())) {
+  document.getElementById("adminBtn").style.display = "inline-block";
+}
 
 // admin kontrol
 if (!currentUser || !adminList.includes(currentUser.toLowerCase())) {
