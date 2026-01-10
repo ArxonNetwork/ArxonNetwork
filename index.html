@@ -148,7 +148,12 @@ body {
 
 <script>
 const SERVER_IP = "193.164.4.244";
-const admins = ["Syvex", "mehmety3232"];
+const admins = ["syvex", "mehmety3232"];
+
+if (admins.includes(currentUser.toLowerCase())) {
+  document.getElementById("adminBtn").style.display = "inline-block";
+}
+
 const currentUser = localStorage.getItem("loginUser");
 
 /* LOGIN PANEL */
