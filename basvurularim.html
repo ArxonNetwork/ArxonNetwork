@@ -2,60 +2,37 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<title>Başvurularım | ArxonNetwork</title>
-
+<title>Başvurularım | ArxonMC</title>
 <style>
 body {
-  background: #0f2027;
-  color: white;
-  font-family: Arial;
-  padding: 40px;
+  background:#0f2027;
+  color:white;
+  font-family:Arial;
+  padding:40px;
 }
-
 .box {
-  max-width: 800px;
-  margin: auto;
-  background: rgba(0,0,0,0.55);
-  padding: 30px;
-  border-radius: 20px;
+  max-width:800px;
+  margin:auto;
+  background:rgba(0,0,0,0.55);
+  padding:30px;
+  border-radius:20px;
 }
-
 h1 {
-  color: #7b6cff;
-  margin-bottom: 20px;
+  color:#7b6cff;
+  margin-bottom:20px;
 }
-
 .app {
-  background: rgba(255,255,255,0.08);
-  padding: 15px;
-  margin: 15px 0;
-  border-radius: 15px;
+  background:rgba(0,0,0,0.4);
+  padding:15px;
+  border-radius:12px;
+  margin-bottom:15px;
 }
-
-.status-beklemede {
-  color: orange;
-  font-weight: bold;
+.status {
+  font-weight:bold;
 }
-
-.status-onaylandı {
-  color: #00ff99;
-  font-weight: bold;
-}
-
-.status-reddedildi {
-  color: #ff4d4d;
-  font-weight: bold;
-}
-
-.back {
-  margin-top: 25px;
-  display: inline-block;
-  background: #7b6cff;
-  padding: 12px 20px;
-  border-radius: 12px;
-  color: white;
-  text-decoration: none;
-}
+.wait { color:orange; }
+.ok { color:#00ff99; }
+.no { color:#ff5555; }
 </style>
 </head>
 
@@ -63,10 +40,7 @@ h1 {
 
 <div class="box">
   <h1>📄 Başvurularım</h1>
-
   <div id="list"></div>
-
-  <a class="back" href="index.html">⬅ Ana Sayfa</a>
 </div>
 
 <script>
@@ -74,41 +48,51 @@ const user = localStorage.getItem("loginUser");
 const listDiv = document.getElementById("list");
 
 if (!user) {
-  listDiv.innerHTML = "<i>Giriş yapmadan başvurulara bakamazsın.</i>";
+  listDiv.innerHTML = "Giriş yapmamışsın.";
 } else {
-  const all = JSON.parse(localStorage.getItem("basvurular")) || [];
-  const mine = all.filter(b => b.user === user);
+  let found = false;
 
-  if (mine.length === 0) {
-    listDiv.innerHTML = "<i>Henüz bir başvurun yok.</i>";
-  } else {
-    mine.forEach(b => {
-      let statusText = "";
-      let cls = "";
+  const aac = JSON.parse(localStorage.getItem("aac_basvuru")) || [];
+  const rehber = JSON.parse(localStorage.getItem("rehber_basvuru")) || [];
 
-      if (b.status === "beklemede") {
-        statusText = "⏳ Onay Bekliyor";
-        cls = "status-beklemede";
-      }
-      if (b.status === "onaylandı") {
-        statusText = "✅ Onaylandı";
-        cls = "status-onaylandı";
-      }
-      if (b.status === "reddedildi") {
-        statusText = "❌ Onaylanmadı";
-        cls = "status-reddedildi";
-      }
-
+  aac.forEach(b => {
+    if (b.nick === user) {
+      found = true;
       listDiv.innerHTML += `
         <div class="app">
-          <b>📌 Tür:</b> ${b.type.toUpperCase()}<br>
-          <b>📝 Açıklama:</b> ${b.reason}<br>
-          <b>🕒 Tarih:</b> ${b.date}<br>
-          <b>📍 Durum:</b>
-          <span class="${cls}">${statusText}</span>
+          <b>🛡 AAC Başvurusu</b><br>
+          Tarih: ${b.tarih}<br>
+          Durum:
+          <span class="status ${b.status || 'wait'}">
+            ${b.status === "ok" ? "Onaylandı"
+              : b.status === "no" ? "Reddedildi"
+              : "Onay Bekliyor"}
+          </span>
         </div>
       `;
-    });
+    }
+  });
+
+  rehber.forEach(b => {
+    if (b.nick === user) {
+      found = true;
+      listDiv.innerHTML += `
+        <div class="app">
+          <b>📘 Rehber Başvurusu</b><br>
+          Tarih: ${b.tarih}<br>
+          Durum:
+          <span class="status ${b.status || 'wait'}">
+            ${b.status === "ok" ? "Onaylandı"
+              : b.status === "no" ? "Reddedildi"
+              : "Onay Bekliyor"}
+          </span>
+        </div>
+      `;
+    }
+  });
+
+  if (!found) {
+    listDiv.innerHTML = "Henüz bir başvurun yok.";
   }
 }
 </script>
