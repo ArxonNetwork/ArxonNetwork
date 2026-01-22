@@ -22,14 +22,18 @@
 
 <!-- ANA KART -->
 <div class="card">
-  <p><b>IP:</b> 193.164.4.244</p>
+  <p><b>IP:</b> <span id="server-ip">193.164.4.244</span></p>
 
   <div class="status">
     <b>Sunucu:</b> <span id="status-text">Kontrol ediliyor...</span><br>
     Oyuncu: <span id="player-count">-</span>
   </div>
 
-  <button onclick="openShop()">🛒 Mağaza</button>
+  <div class="buttons">
+    <button onclick="copyIP()">🎮 Sunucuya Katıl</button>
+    <button onclick="openShop()">🛒 Mağaza</button>
+    <button onclick="openDiscord()">💬 Discord</button>
+  </div>
 </div>
 
 <script>
