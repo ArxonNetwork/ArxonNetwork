@@ -52,28 +52,27 @@ button {
 
   <button onclick="giveCredit()">💳 Kredi Ver</button>
   <button onclick="banUser()">⛔ Banla</button>
-  <button onclick="unbanUser()">⛔ Ban Aç</button>
+  <button onclick="unbanUser()">✅ Ban Aç</button>
   <button onclick="logout()">🚪 Çıkış Yap</button>
 </div>
 
 <script>
-// SADECE BUNLAR ADMİN
-const admins = ["syvex", "mehmety3232"];
+// GİRİŞ YAPAN KULLANICI
+const currentUser = localStorage.getItem("loginUser");
 
-if (admins.includes(currentUser.toLowerCase())) {
-  document.getElementById("adminBtn").style.display = "inline-block";
-}
+// SADECE BU İKİSİ ADMİN
+const admins = ["mehmety3232", "syvex"];
 
-// admin kontrol
-if (!currentUser || !adminList.includes(currentUser.toLowerCase())) {
+// GİRİŞ YOKSA YA DA ADMİN DEĞİLSE → SİKTİR GİT
+if (!currentUser || !admins.includes(currentUser.toLowerCase())) {
   location.href = "index.html";
 }
 
-// giriş yapan yetkiliyi göster
+// YETKİLİ ADINI YAZ
 document.getElementById("adminName").innerText =
   "👤 Giriş yapan yetkili: " + currentUser;
 
-// kredi ver
+// KREDİ VER
 function giveCredit() {
   const u = document.getElementById("target").value;
   const c = Number(document.getElementById("credit").value);
@@ -90,7 +89,7 @@ function giveCredit() {
   alert("Kredi verildi");
 }
 
-// banla
+// BANLA
 function banUser() {
   const u = document.getElementById("target").value;
   if (!u) return alert("Kullanıcı adı yaz");
@@ -105,7 +104,7 @@ function banUser() {
   alert("Kullanıcı banlandı");
 }
 
-// ban aç
+// BAN AÇ
 function unbanUser() {
   const u = document.getElementById("target").value;
   if (!u) return alert("Kullanıcı adı yaz");
@@ -120,7 +119,7 @@ function unbanUser() {
   alert("Kullanıcının banı kaldırıldı");
 }
 
-// çıkış
+// ÇIKIŞ
 function logout() {
   localStorage.removeItem("loginUser");
   location.href = "login.html";
