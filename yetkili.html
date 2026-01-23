@@ -72,73 +72,54 @@ button {
 <div id="rehberList"></div>
 
 <script>
-document.addEventListener("DOMContentLoaded", () => {
+function loadAAC() {
+  const list = JSON.parse(localStorage.getItem("aac_basvuru") || "[]");
+  const el = document.getElementById("aacList");
 
-  const aacEl = document.getElementById("aacList");
-  const rehberEl = document.getElementById("rehberList");
-
-  let foundAAC = false;
-  let foundRehber = false;
-
-  for (let i = 0; i < localStorage.length; i++) {
-    const key = localStorage.key(i);
-
-    if (!key.startsWith("applications_")) continue;
-
-    const nick = key.replace("applications_", "");
-    const apps = JSON.parse(localStorage.getItem(key)) || [];
-
-    apps.forEach((a, index) => {
-      const box = `
-        <div class="app">
-          <b>Nick:</b> ${nick}<br>
-          <b>Tür:</b> ${a.type}<br>
-          <b>Durum:</b> ${a.status}<br>
-          <small>${a.date}</small><br><br>
-
-          <button onclick="approve('${key}', ${index})">✅ Onayla</button>
-          <button onclick="reject('${key}', ${index})">❌ Reddet</button>
-          <button onclick="removeApp('${key}', ${index})">🗑 Sil</button>
-        </div>
-      `;
-
-      if (a.type === "AAC") {
-        foundAAC = true;
-        aacEl.innerHTML += box;
-      }
-
-      if (a.type === "REHBER") {
-        foundRehber = true;
-        rehberEl.innerHTML += box;
-      }
-    });
+  if (list.length === 0) {
+    el.innerHTML = "<p>AAC başvurusu yok.</p>";
+    return;
   }
 
-  if (!foundAAC) aacEl.innerHTML = "<p>AAC başvurusu yok.</p>";
-  if (!foundRehber) rehberEl.innerHTML = "<p>Rehber başvurusu yok.</p>";
-});
+  el.innerHTML = "";
+  list.forEach((b, i) => {
+    el.innerHTML += `
+      <div class="app">
+        <b>Nick:</b> ${b.nick}<br>
+        <b>Kont:</b><br>${b.kont}<br><br>
+        <b>Uygulamalar:</b><br>${b.uyg}<br><br>
+        <small>${b.tarih}</small><br><br>
 
-/* ==== DURUM ==== */
-function approve(key, i) {
-  const list = JSON.parse(localStorage.getItem(key));
+        <button onclick="approveAAC(${i})">✅ Onayla</button>
+        <button onclick="rejectAAC(${i})">❌ Reddet</button>
+        <button onclick="deleteAAC(${i})">🗑 Sil</button>
+      </div>
+    `;
+  });
+}
+
+function approveAAC(i) {
+  const list = JSON.parse(localStorage.getItem("aac_basvuru"));
   list[i].status = "Onaylandı";
-  localStorage.setItem(key, JSON.stringify(list));
+  localStorage.setItem("aac_basvuru", JSON.stringify(list));
   location.reload();
 }
 
-function reject(key, i) {
-  const list = JSON.parse(localStorage.getItem(key));
+function rejectAAC(i) {
+  const list = JSON.parse(localStorage.getItem("aac_basvuru"));
   list[i].status = "Reddedildi";
-  localStorage.setItem(key, JSON.stringify(list));
+  localStorage.setItem("aac_basvuru", JSON.stringify(list));
   location.reload();
 }
 
-function removeApp(key, i) {
-  const list = JSON.parse(localStorage.getItem(key));
+function deleteAAC(i) {
+  const list = JSON.parse(localStorage.getItem("aac_basvuru"));
   list.splice(i, 1);
-  localStorage.setItem(key, JSON.stringify(list));
+  localStorage.setItem("aac_basvuru", JSON.stringify(list));
   location.reload();
 }
+
+loadAAC();
 </script>
 
 
