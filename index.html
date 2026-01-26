@@ -1,136 +1,297 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <title>Sunucu Adı</title>
-  <style>
-    * {
-      box-sizing: border-box;
-      font-family: Arial, Helvetica, sans-serif;
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Arxon Network - BoxMining & Survival</title>
 
-    body {
-      margin: 0;
-      min-height: 100vh;
-      background: url("https://www.vironcraft.com/assets/img/bg.jpg") center/cover no-repeat fixed;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-    }
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
 
-    .overlay {
-      background: rgba(0, 0, 0, 0.65);
-      padding: 30px;
-      border-radius: 14px;
-      width: 90%;
-      max-width: 900px;
-      box-shadow: 0 0 40px rgba(0,0,0,0.7);
-    }
+<style>
+:root {
+  --bg1:#0a0a0f;
+  --bg2:#111;
+  --purple:#a855f7;
+  --blue:#60a5fa;
+  --text:#e5e7eb;
+  --muted:#d1d5db;
+  --glow-p:#c084fc;
+  --glow-b:#93c5fd;
+}
 
-    h1 {
-      text-align: center;
-      margin-bottom: 25px;
-      letter-spacing: 2px;
-    }
+* { box-sizing:border-box; margin:0; padding:0; }
+body {
+  font-family: Montserrat, sans-serif;
+  background: linear-gradient(180deg,var(--bg1),var(--bg2));
+  color: var(--text);
+  overflow-x:hidden;
+}
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
+#particles-js {
+  position:fixed;
+  inset:0;
+  z-index:-1;
+}
 
-    th, td {
-      padding: 16px;
-      text-align: center;
-      border-bottom: 1px solid rgba(255,255,255,0.15);
-    }
+/* NAVBAR */
+.navbar {
+  position:sticky;
+  top:0;
+  z-index:50;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:16px 28px;
+  background:rgba(10,10,15,0.75);
+  backdrop-filter: blur(10px);
+  border-bottom:1px solid rgba(255,255,255,0.05);
+}
 
-    th {
-      background: rgba(255,255,255,0.1);
-      font-size: 18px;
-    }
+.logo {
+  font-family: Orbitron, sans-serif;
+  font-size:22px;
+  font-weight:700;
+}
+.logo span { color: var(--purple); }
 
-    tr:hover {
-      background: rgba(255,255,255,0.07);
-    }
+.menu {
+  list-style:none;
+  display:flex;
+  gap:22px;
+}
+.menu a {
+  color:var(--muted);
+  text-decoration:none;
+  font-weight:600;
+  transition:0.3s;
+}
+.menu a:hover { color:#fff; text-shadow:0 0 8px var(--purple); }
 
-    .ip-box {
-      background: rgba(0,0,0,0.5);
-      padding: 10px 18px;
-      border-radius: 8px;
-      font-weight: bold;
-      cursor: pointer;
-      display: inline-block;
-    }
+.auth-buttons {
+  display:flex;
+  gap:12px;
+}
 
-    .ip-box:hover {
-      background: rgba(255,255,255,0.15);
-    }
+.btn {
+  padding:10px 18px;
+  border-radius:10px;
+  font-weight:700;
+  text-decoration:none;
+  transition:0.3s;
+  display:inline-block;
+}
 
-    .btn {
-      background: #ff9800;
-      color: #000;
-      padding: 10px 18px;
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: bold;
-      transition: 0.2s;
-    }
+.login {
+  color:#fff;
+  border:1px solid var(--purple);
+  box-shadow:0 0 12px rgba(168,85,247,.4);
+}
+.login:hover {
+  transform:scale(1.07);
+  box-shadow:0 0 25px var(--glow-p);
+}
 
-    .btn:hover {
-      background: #ffc107;
-    }
+.register {
+  color:#fff;
+  border:1px solid var(--blue);
+  box-shadow:0 0 12px rgba(96,165,250,.4);
+}
+.register:hover {
+  transform:scale(1.07);
+  box-shadow:0 0 25px var(--glow-b);
+}
 
-    footer {
-      text-align: center;
-      margin-top: 20px;
-      font-size: 13px;
-      opacity: 0.7;
-    }
-  </style>
+/* HERO */
+.hero {
+  text-align:center;
+  padding:120px 20px 90px;
+}
+.hero h1 {
+  font-family:Orbitron;
+  font-size:64px;
+  letter-spacing:3px;
+  text-shadow:0 0 30px rgba(168,85,247,.5);
+}
+.slogan {
+  margin-top:14px;
+  font-size:22px;
+  font-weight:600;
+}
+.sub {
+  margin-top:8px;
+  color:var(--muted);
+}
+
+.hero-buttons {
+  margin-top:36px;
+  display:flex;
+  justify-content:center;
+  gap:18px;
+  flex-wrap:wrap;
+}
+.primary {
+  background:var(--purple);
+  color:#000;
+  box-shadow:0 0 25px rgba(168,85,247,.6);
+}
+.primary:hover { transform:scale(1.08); }
+
+.secondary {
+  background:transparent;
+  border:1px solid var(--blue);
+  color:#fff;
+  box-shadow:0 0 18px rgba(96,165,250,.6);
+}
+.secondary:hover { transform:scale(1.08); }
+
+/* STATS */
+.stats {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:20px;
+  padding:60px 40px;
+}
+.card {
+  background:rgba(255,255,255,0.04);
+  border-radius:14px;
+  padding:28px;
+  text-align:center;
+  backdrop-filter: blur(6px);
+  box-shadow:0 0 20px rgba(0,0,0,.5);
+}
+.card span {
+  display:block;
+  margin-top:10px;
+  font-size:28px;
+  font-weight:700;
+  color:var(--purple);
+}
+
+/* ACTIVITIES */
+.activities {
+  padding:70px 30px;
+}
+.activities h2 {
+  text-align:center;
+  font-size:32px;
+  margin-bottom:30px;
+}
+table {
+  width:100%;
+  max-width:900px;
+  margin:auto;
+  border-collapse:collapse;
+}
+td {
+  padding:14px;
+  border-bottom:1px solid rgba(255,255,255,0.08);
+}
+
+/* DISCORD */
+.discord {
+  text-align:center;
+  padding:80px 20px;
+}
+.discord-btn {
+  background:var(--blue);
+  color:#000;
+  margin-top:18px;
+  box-shadow:0 0 30px rgba(96,165,250,.7);
+}
+.discord-btn:hover { transform:scale(1.1); }
+
+/* FOOTER */
+footer {
+  text-align:center;
+  padding:25px;
+  color:#9ca3af;
+  font-size:14px;
+}
+
+/* MOBILE */
+@media(max-width:900px){
+  .menu { display:none; }
+  .navbar { flex-wrap:wrap; gap:12px; }
+}
+</style>
 </head>
+
 <body>
 
-<div class="overlay">
-  <h1>⚔ SUNUCU ADI ⚔</h1>
+<div id="particles-js"></div>
 
+<nav class="navbar">
+  <div class="logo">ARXON <span>NETWORK</span></div>
+
+  <ul class="menu">
+    <li><a href="#">Anasayfa</a></li>
+    <li><a href="#">Kurallar</a></li>
+    <li><a href="#">Discord</a></li>
+    <li><a href="#">Oyuna Gir</a></li>
+  </ul>
+
+  <div class="auth-buttons">
+    <a href="#giris" class="btn login">Giriş Yap</a>
+    <a href="#kayit" class="btn register">Kayıt Ol</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <h1>ARXON NETWORK</h1>
+  <p class="slogan">Türkiye'nin En Güçlü BoxMining & Survival Sunucusu</p>
+  <p class="sub">Binlerce oyuncuyla limitsiz macera seni bekliyor!</p>
+
+  <div class="hero-buttons">
+    <a href="minecraft://connect/play.arxonnetwork.com" class="btn primary">Oyuna Giriş</a>
+    <a href="https://discord.gg/" class="btn secondary">Discord'a Katıl</a>
+  </div>
+</section>
+
+<section class="stats">
+  <div class="card">Online Oyuncu<span>1.248</span></div>
+  <div class="card">Toplam Kayıt<span>47.892</span></div>
+  <div class="card">En Yüksek Bağış<span>14.750 TL</span></div>
+  <div class="card">Uptime<span>99.98%</span></div>
+</section>
+
+<section class="activities">
+  <h2>Son Aktiviteler</h2>
   <table>
-    <tr>
-      <th>Bilgi</th>
-      <th>Detay</th>
-    </tr>
-
-    <tr>
-      <td>Sunucu IP</td>
-      <td>
-        <div class="ip-box" onclick="navigator.clipboard.writeText('play.sunucuadi.com')">
-          play.sunucuadi.com
-        </div>
-      </td>
-    </tr>
-
-    <tr>
-      <td>Sürüm</td>
-      <td>1.16.5 – 1.20.x</td>
-    </tr>
-
-    <tr>
-      <td>Oyun Türü</td>
-      <td>Survival / SkyBlock / Faction</td>
-    </tr>
-
-    <tr>
-      <td>Discord</td>
-      <td>
-        <a class="btn" href="#" target="_blank">Katıl</a>
-      </td>
-    </tr>
+    <tr><td>xCinarEfe</td><td>10.000 TL bağış yaptı</td><td>2 dk önce</td></tr>
+    <tr><td>DarkMiner</td><td>Legendary rank aldı</td><td>5 dk önce</td></tr>
+    <tr><td>ArxonTR</td><td>Spawner kazandı</td><td>11 dk önce</td></tr>
+    <tr><td>VoidX</td><td>5.000 TL bağış yaptı</td><td>20 dk önce</td></tr>
+    <tr><td>KaraBox</td><td>Boss kesti</td><td>28 dk önce</td></tr>
   </table>
+</section>
 
-  <footer>
-    © 2026 Sunucu Adı | Tüm Hakları Saklıdır
-  </footer>
-</div>
+<section class="discord">
+  <h2>Discord'a Katıl</h2>
+  <p>Binlerce oyuncuyla burada buluşuyoruz!</p>
+  <a href="https://discord.gg/" class="btn discord-btn">Hemen Katıl</a>
+</section>
+
+<footer>
+  © 2025 Arxon Network • Trabzon'dan sevgilerle
+</footer>
+
+<script>
+particlesJS("particles-js", {
+  particles:{
+    number:{ value:60, density:{ enable:true, value_area:800 }},
+    color:{ value:["#a855f7","#60a5fa"]},
+    shape:{ type:"circle"},
+    opacity:{ value:0.5, random:true},
+    size:{ value:3, random:true},
+    move:{ enable:true, speed:1, random:true }
+  },
+  interactivity:{
+    events:{ onhover:{ enable:true, mode:"repulse"} },
+    modes:{ repulse:{ distance:80 }}
+  }
+});
+</script>
 
 </body>
 </html>
