@@ -2,238 +2,295 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<title>Arxon Network</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&display=swap" rel="stylesheet">
+<title>Arxon Network • BoxMining & Survival</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Orbitron,sans-serif}
-
-body{
-  min-height:100vh;
-  color:#fff;
-  background:
-    linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.6)),
-    url("https://images.wallpaperscraft.com/image/single/minecraft_house_landscape_128512_1920x1080.jpg")
-    center/cover fixed no-repeat;
-  overflow-x:hidden;
+:root{
+  --bg:#0a0a0f;
+  --bg2:#111;
+  --purple:#a855f7;
+  --blue:#60a5fa;
+  --text:#e5e7eb;
+  --muted:#9ca3af;
 }
 
-/* FIRE PARTICLES */
-#fireCanvas{
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:Montserrat,sans-serif;
+  background:linear-gradient(180deg,var(--bg),var(--bg2));
+  color:var(--text);
+}
+
+#particles-js{
   position:fixed;
   inset:0;
-  z-index:0;
-  pointer-events:none;
+  z-index:-1;
 }
 
 /* NAVBAR */
-nav{
-  position:fixed;
-  top:0;width:100%;
-  padding:18px 40px;
+.navbar{
+  position:sticky;
+  top:0;
+  z-index:50;
   display:flex;
   justify-content:space-between;
   align-items:center;
-  background:rgba(0,0,0,.45);
-  backdrop-filter:blur(10px);
-  z-index:10;
+  padding:16px 30px;
+  background:rgba(0,0,0,.6);
+  backdrop-filter:blur(12px);
 }
-nav .logo{font-weight:800;font-size:22px}
-nav a{color:#fff;text-decoration:none;margin-left:18px;opacity:.85}
-nav a:hover{opacity:1}
+
+.logo{
+  font-family:Orbitron;
+  font-size:22px;
+}
+.logo span{color:var(--purple)}
+
+.menu{
+  list-style:none;
+  display:flex;
+  gap:22px;
+}
+.menu a{
+  color:var(--muted);
+  text-decoration:none;
+  font-weight:600;
+}
+.menu a:hover{
+  color:#fff;
+  text-shadow:0 0 10px var(--purple);
+}
+
+.auth{
+  display:flex;
+  gap:12px;
+}
+.btn{
+  padding:10px 18px;
+  border-radius:10px;
+  font-weight:700;
+  text-decoration:none;
+  transition:.3s;
+}
+.login{
+  border:1px solid var(--purple);
+  color:#fff;
+  box-shadow:0 0 12px rgba(168,85,247,.5);
+}
+.register{
+  border:1px solid var(--blue);
+  color:#fff;
+  box-shadow:0 0 12px rgba(96,165,250,.5);
+}
+.btn:hover{
+  transform:scale(1.08);
+}
 
 /* HERO */
 .hero{
-  min-height:100vh;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  gap:24px;
   text-align:center;
-  position:relative;
-  z-index:2;
+  padding:120px 20px 90px;
 }
-.hero h1{font-size:56px;font-weight:800}
-
-.server-box{
-  background:rgba(0,0,0,.6);
-  padding:20px 30px;
-  border-radius:14px;
+.hero h1{
+  font-family:Orbitron;
+  font-size:64px;
+  text-shadow:0 0 30px rgba(168,85,247,.6);
 }
-.ip{cursor:pointer;font-size:20px}
-.status{font-size:14px;margin-top:6px}
+.hero p{
+  margin-top:12px;
+}
+.hero-buttons{
+  margin-top:40px;
+  display:flex;
+  justify-content:center;
+  gap:20px;
+  flex-wrap:wrap;
+}
+.primary{
+  background:var(--purple);
+  color:#000;
+  box-shadow:0 0 25px rgba(168,85,247,.7);
+}
+.secondary{
+  border:1px solid var(--blue);
+  box-shadow:0 0 25px rgba(96,165,250,.6);
+}
 
-/* AUTH */
-.auth-section{
-  max-width:420px;
-  margin:120px auto;
-  padding:36px 30px;
-  background:rgba(0,0,0,.65);
-  backdrop-filter:blur(10px);
+/* STATS */
+.stats{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:20px;
+  padding:60px 40px;
+}
+.card{
+  background:rgba(255,255,255,.05);
   border-radius:16px;
-  display:none;
-  position:relative;
-  z-index:2;
+  padding:26px;
+  text-align:center;
+  backdrop-filter:blur(8px);
 }
-.auth-section h2{text-align:center;margin-bottom:20px}
-
-.auth-form{display:flex;flex-direction:column;gap:14px}
-.auth-form input{
-  padding:12px;border:none;border-radius:10px;
-  background:#111;color:#fff
-}
-.auth-form button{
-  padding:12px;border:none;border-radius:10px;
-  background:#7c3aed;color:#fff;
-  font-weight:700;cursor:pointer
+.card span{
+  display:block;
+  margin-top:10px;
+  font-size:28px;
+  color:var(--purple);
+  font-weight:700;
 }
 
-.switch{text-align:center;margin-top:16px;font-size:14px}
-.switch a{color:#a855f7;text-decoration:none}
+/* SECTIONS */
+section{padding:90px 30px}
+h2{text-align:center;font-size:36px;margin-bottom:30px}
 
-:target{display:block}
-
-/* TOAST */
-.toast{
-  position:fixed;
-  top:50%;left:50%;
-  transform:translate(-50%,-50%);
-  background:rgba(0,0,0,.85);
-  padding:14px 24px;
-  border-radius:12px;
-  opacity:0;
-  transition:.3s;
-  z-index:20;
+/* TABLE */
+table{
+  width:100%;
+  max-width:900px;
+  margin:auto;
+  border-collapse:collapse;
 }
-.toast.show{opacity:1}
+th,td{
+  padding:14px;
+  border-bottom:1px solid rgba(255,255,255,.1);
+}
+th{
+  background:rgba(168,85,247,.15);
+}
+
+/* DISCORD */
+.discord{text-align:center}
+.discord a{
+  display:inline-block;
+  margin-top:20px;
+  background:var(--blue);
+  color:#000;
+  box-shadow:0 0 30px rgba(96,165,250,.7);
+}
+
+/* FOOTER */
+footer{
+  padding:30px;
+  text-align:center;
+  color:#9ca3af;
+}
+
+@media(max-width:900px){
+  .menu{display:none}
+}
 </style>
 </head>
 
 <body>
 
-<canvas id="fireCanvas"></canvas>
+<div id="particles-js"></div>
 
-<nav>
-  <div class="logo">ARXON</div>
-  <div>
-    <a href="#giris">Giriş</a>
-    <a href="#kayit">Kayıt</a>
-    <a href="https://discord.gg/HEEPr9k9uD" target="_blank">Discord</a>
+<nav class="navbar">
+  <div class="logo">ARXON <span>NETWORK</span></div>
+  <ul class="menu">
+    <li><a href="#">Anasayfa</a></li>
+    <li><a href="#magaza">Mağaza</a></li>
+    <li><a href="#kurallar">Kurallar</a></li>
+    <li><a href="#discord">Discord</a></li>
+  </ul>
+  <div class="auth">
+    <a href="#login" class="btn login">Giriş Yap</a>
+    <a href="#register" class="btn register">Kayıt Ol</a>
   </div>
 </nav>
 
 <section class="hero">
   <h1>ARXON NETWORK</h1>
-  <div class="server-box">
-    <div class="ip" onclick="copyIP()">193.164.4.244</div>
-    <div class="status" id="statusText">Kontrol ediliyor...</div>
+  <p>Türkiye'nin En Güçlü BoxMining & Survival Sunucusu</p>
+  <p>Binlerce oyuncuyla limitsiz macera seni bekliyor!</p>
+
+  <div class="hero-buttons">
+    <a class="btn primary" href="minecraft://connect/193.164.4.244">Oyuna Gir</a>
+    <a class="btn secondary" href="https://discord.gg/HEEPr9k9uD">Discord</a>
   </div>
 </section>
 
-<section id="giris" class="auth-section">
-  <h2>Giriş Yap</h2>
-  <form class="auth-form" onsubmit="login(event)">
-    <input id="loginUser" placeholder="Kullanıcı Adı" required>
-    <input id="loginPass" type="password" placeholder="Şifre" required>
-    <button>Giriş Yap</button>
-  </form>
-  <p class="switch">Hesabın yok mu? <a href="#kayit">Kayıt Ol</a></p>
+<section class="stats">
+  <div class="card">Sunucu Durumu<span id="status">Yükleniyor</span></div>
+  <div class="card">Toplam Kayıt<span id="registerCount">Yükleniyor</span></div>
+  <div class="card">Uptime<span>99.98%</span></div>
+  <div class="card">En Yüksek Bağış<span>0 TL</span></div>
 </section>
 
-<section id="kayit" class="auth-section">
-  <h2>Kayıt Ol</h2>
-  <form class="auth-form" onsubmit="register(event)">
-    <input id="regUser" placeholder="Kullanıcı Adı" required>
-    <input id="regMail" type="email" placeholder="E-Posta" required>
-    <input id="regPass" type="password" placeholder="Şifre" required>
-    <button>Kayıt Ol</button>
-  </form>
-  <p class="switch">Zaten hesabın var mı? <a href="#giris">Giriş Yap</a></p>
+<section id="magaza">
+  <h2>🛒 Mağaza</h2>
+  <table>
+    <tr><th>Ürün</th><th>Fiyat</th></tr>
+    <tr><td>VIP</td><td>99 TL</td></tr>
+    <tr><td>Legend</td><td>249 TL</td></tr>
+    <tr><td>Spawner Paketi</td><td>149 TL</td></tr>
+  </table>
 </section>
 
-<div class="toast" id="toast"></div>
+<section id="kurallar">
+  <h2>📜 Kurallar</h2>
+  <table>
+    <tr><th>#</th><th>Kural</th><th>Ceza</th></tr>
+    <tr><td>1</td><td>Hile yasaktır</td><td>Perma Ban</td></tr>
+    <tr><td>2</td><td>Küfür / Toxic</td><td>Mute</td></tr>
+    <tr><td>3</td><td>Reklam</td><td>Ban</td></tr>
+  </table>
+</section>
+
+<section id="discord" class="discord">
+  <h2>Discord</h2>
+  <p>Topluluğa katıl</p>
+  <a class="btn" href="https://discord.gg/HEEPr9k9uD">Discord'a Katıl</a>
+</section>
+
+<footer>
+  © 2026 Arxon Network • Türkiye
+</footer>
 
 <script>
-/* ===== SERVER STATUS ===== */
-const ip="193.164.4.244";
-const statusText=document.getElementById("statusText");
+particlesJS("particles-js",{
+  particles:{
+    number:{value:70},
+    color:{value:["#a855f7","#60a5fa"]},
+    opacity:{value:.5,random:true},
+    size:{value:3,random:true},
+    move:{enable:true,speed:1}
+  }
+});
+</script>
 
-async function checkServer(){
+<script>
+async function serverStatus(){
+  const el=document.getElementById("status");
   try{
-    const r=await fetch("https://api.mcstatus.io/v2/status/java/"+ip);
+    const r=await fetch("https://api.mcstatus.io/v2/status/java/193.164.4.244");
     const d=await r.json();
-    statusText.textContent=d.online
-      ? "🟢 Online | Oyuncu: "+d.players.online
-      : "🔴 Offline";
-  }catch{statusText.textContent="Durum alınamadı"}
+    if(d.online){
+      el.innerHTML=`ᯤ ${d.players.online} Oyuncu`;
+      el.style.color="#22c55e";
+    }else{
+      el.innerHTML="ᯤ Kapalı";
+      el.style.color="#ef4444";
+    }
+  }catch{
+    el.innerHTML="Bağlantı Yok";
+  }
 }
-checkServer(); setInterval(checkServer,10000);
+serverStatus();
+setInterval(serverStatus,10000);
+</script>
 
-/* ===== COPY ===== */
-function copyIP(){
-  navigator.clipboard.writeText(ip);
-  showToast("IP kopyalandı");
+<script>
+async function registerCount(){
+  await fetch("https://api.countapi.xyz/hit/arxon/register");
+  const r=await fetch("https://api.countapi.xyz/get/arxon/register");
+  const d=await r.json();
+  document.getElementById("registerCount").innerText=d.value;
 }
-
-/* ===== AUTH SAVE ===== */
-function register(e){
-  e.preventDefault();
-  const user=regUser.value;
-  const pass=regPass.value;
-  localStorage.setItem("user_"+user,pass);
-  showToast("Kayıt başarılı");
-  location.hash="#giris";
-}
-
-function login(e){
-  e.preventDefault();
-  const u=loginUser.value;
-  const p=loginPass.value;
-  const saved=localStorage.getItem("user_"+u);
-  showToast(saved===p ? "Giriş başarılı" : "Hatalı bilgiler");
-}
-
-/* ===== TOAST ===== */
-function showToast(t){
-  const el=document.getElementById("toast");
-  el.textContent=t;
-  el.classList.add("show");
-  setTimeout(()=>el.classList.remove("show"),1500);
-}
-
-/* ===== FIRE PARTICLES ===== */
-const c=document.getElementById("fireCanvas");
-const ctx=c.getContext("2d");
-let w,h,particles=[];
-function resize(){w=c.width=innerWidth;h=c.height=innerHeight}
-window.onresize=resize; resize();
-
-for(let i=0;i<120;i++){
-  particles.push({
-    x:Math.random()*w,
-    y:h+Math.random()*h,
-    r:Math.random()*2+1,
-    v:Math.random()*1+0.5,
-    a:Math.random()
-  });
-}
-
-function fire(){
-  ctx.clearRect(0,0,w,h);
-  particles.forEach(p=>{
-    p.y-=p.v;
-    p.x+=Math.sin(p.y*0.01)*0.5;
-    if(p.y<0){p.y=h; p.x=Math.random()*w}
-    ctx.fillStyle=`rgba(255,140,0,${p.a})`;
-    ctx.beginPath();
-    ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-    ctx.fill();
-  });
-  requestAnimationFrame(fire);
-}
-fire();
+registerCount();
 </script>
 
 </body>
