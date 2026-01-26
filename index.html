@@ -7,12 +7,14 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-body { font-family: 'Inter', sans-serif; overflow-x:hidden;}
+body { font-family: 'Inter', sans-serif; overflow-x:hidden; }
 .hero-bg { background: linear-gradient(90deg, #000, #111); position:relative; }
 @keyframes spin-slow { 0%{transform: rotate(0deg);} 100%{transform: rotate(360deg);} }
-#saturn { position:absolute; width:200px; height:200px; top:10%; left:50%; margin-left:-100px; animation: spin-slow 60s linear infinite;}
+#saturn { position:absolute; width:200px; height:200px; top:10%; left:50%; margin-left:-100px; animation: spin-slow 60s linear infinite; border-radius:50%; }
 #boxminingInfo { position:fixed; bottom:120px; left:50%; transform:translateX(-50%); background:rgba(0,0,0,0.7); color:white; padding:10px 20px; border-radius:12px; display:none;}
 #discordFloat { position:fixed; bottom:20px; right:20px; background:#5865F2; color:white; padding:10px 15px; border-radius:8px; display:none;}
+.modal-bg { position:fixed; inset:0; background:black/70; display:none; justify-center; items-center; z-index:60; }
+.modal { background:#111; padding:30px; border-radius:12px; width:90%; max-width:400px; text-align:center; }
 </style>
 </head>
 <body class="bg-black text-white">
@@ -24,8 +26,8 @@ body { font-family: 'Inter', sans-serif; overflow-x:hidden;}
     <span class="hidden md:block font-bold text-xl">Arxon NW</span>
   </div>
   <div class="space-x-2" id="authButtons">
-    <button onclick="login()" class="px-3 py-1 hover:bg-gray-800/50 rounded">Giriş</button>
-    <button onclick="register()" class="px-3 py-1 rounded bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600">Kayıt</button>
+    <button onclick="openModal('login')" class="px-3 py-1 hover:bg-gray-800/50 rounded">Giriş</button>
+    <button onclick="openModal('register')" class="px-3 py-1 rounded bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600">Kayıt</button>
   </div>
   <div id="logoutBtn" class="hidden">
     <button onclick="logout()" class="px-3 py-1 rounded bg-red-600 hover:bg-red-700">Çıkış</button>
@@ -35,7 +37,7 @@ body { font-family: 'Inter', sans-serif; overflow-x:hidden;}
 <!-- Hero -->
 <section id="hero" class="relative min-h-screen flex flex-col items-center justify-center overflow-hidden">
   <!-- Satürn -->
-  <img id="saturn" src="https://upload.wikimedia.org/wikipedia/commons/c/c7/Saturn_during_Equinox.jpg" class="rounded-full shadow-2xl">
+  <img id="saturn" src="https://upload.wikimedia.org/wikipedia/commons/c/c7/Saturn_during_Equinox.jpg" class="shadow-2xl">
 
   <!-- Hero Content -->
   <div class="relative z-10 text-center px-4">
@@ -43,8 +45,8 @@ body { font-family: 'Inter', sans-serif; overflow-x:hidden;}
     <p class="text-gray-300 mb-8">Boxmining düelloları ve eğlenceli Minecraft deneyimi!</p>
 
     <div class="flex gap-4 justify-center" id="heroButtons">
-      <button onclick="login()" class="px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-lg">Giriş Yap</button>
-      <button onclick="register()" class="px-8 py-4 border-2 border-cyan-500 rounded-lg">Kayıt Ol</button>
+      <button onclick="openModal('login')" class="px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-lg">Giriş Yap</button>
+      <button onclick="openModal('register')" class="px-8 py-4 border-2 border-cyan-500 rounded-lg">Kayıt Ol</button>
     </div>
 
     <!-- Support / Help kutuları -->
@@ -71,27 +73,48 @@ body { font-family: 'Inter', sans-serif; overflow-x:hidden;}
   💬 <a href="https://discord.gg/waREnQHqzj" target="_blank">Discord'a Katıl!</a>
 </div>
 
+<!-- Modal -->
+<div id="modalBg" class="modal-bg flex">
+  <div class="modal">
+    <h2 id="modalTitle" class="text-2xl font-bold mb-4">Giriş</h2>
+    <input id="username" type="text" placeholder="Kullanıcı Adı" class="w-full p-2 mb-3 rounded bg-gray-800 border border-gray-700 text-white">
+    <input id="password" type="password" placeholder="Şifre" class="w-full p-2 mb-4 rounded bg-gray-800 border border-gray-700 text-white">
+    <button id="modalSubmit" class="w-full py-2 bg-gradient-to-r from-cyan-500 to-blue-500 rounded mb-2">Giriş Yap</button>
+    <button onclick="closeModal()" class="w-full py-2 bg-gray-800 rounded">İptal</button>
+  </div>
+</div>
+
 <script>
 let loggedIn = false;
 
-function showToast(msg){
-  alert(msg);
+function openModal(type){
+  document.getElementById('modalBg').style.display='flex';
+  const title = type==='login' ? 'Giriş Yap' : 'Kayıt Ol';
+  document.getElementById('modalTitle').innerText = title;
+  document.getElementById('modalSubmit').innerText = title;
 }
 
-// Fake login / register
-function login(){
-  loggedIn=true;
+function closeModal(){
+  document.getElementById('modalBg').style.display='none';
+}
+
+function loginUser(){
+  loggedIn = true;
   document.getElementById('authButtons').style.display='none';
   document.getElementById('logoutBtn').style.display='inline-block';
   document.getElementById('heroButtons').style.display='none';
+  closeModal();
 }
-function register(){ login(); }
+
 function logout(){
-  loggedIn=false;
+  loggedIn = false;
   document.getElementById('authButtons').style.display='inline-flex';
   document.getElementById('logoutBtn').style.display='none';
   document.getElementById('heroButtons').style.display='flex';
 }
+
+// Fake login/register
+document.getElementById('modalSubmit').addEventListener('click', loginUser);
 
 // Scroll ile Boxmining ve Discord göster
 window.addEventListener('scroll', ()=>{
