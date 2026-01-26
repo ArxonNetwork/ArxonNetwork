@@ -1,176 +1,260 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Arxon NW | BoxMining</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+  <style>
+    :root {
+      --main: #00d9ff;
+      --dark: #1a1a2e;
+      --mid: #0f3460;
+      --text: #ffffff;
+      --text2: #e0e0e0;
+    }
 
-<!doctype html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="theme-color" content="#000000" />
-        <meta name="description" content="A product of emergent.sh" />
-        <!--
-        manifest.json provides metadata used when your web app is installed on a
-        user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
-        -->
-        <!--
-        Notice the use of  in the tags above.
-        It will be replaced with the URL of the `public` folder during the build.
-        Only files inside the `public` folder can be referenced from the HTML.
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
-        Unlike "/favicon.ico" or "favicon.ico", "/favicon.ico" will
-        work correctly both with client-side routing and a non-root public URL.
-        Learn how to configure a non-root public URL by running `npm run build`.
-        -->
-        <title>Emergent | Fullstack App</title>
-        <script src="https://assets.emergent.sh/scripts/emergent-main.js"></script>
-        <!--
-        These two scripts have been added for the Visual Edits, please do not edit or remove them
-        -->
-        <script>
-            // Only load visual edit scripts when inside an iframe
-            if (window.self !== window.top) {
-                // Load debug monitor script
-                var debugMonitorScript = document.createElement('script');
-                debugMonitorScript.src = 'https://assets.emergent.sh/scripts/debug-monitor.js';
-                document.head.appendChild(debugMonitorScript);
+    body {
+      font-family: 'Orbitron', sans-serif;
+      background: radial-gradient(circle at top, #0a0f2c, #000);
+      color: var(--text);
+      overflow-x: hidden;
+    }
 
-                // Configure Tailwind
-                window.tailwind = window.tailwind || {};
-                tailwind.config = {
-                    corePlugins: { preflight: false },
-                };
+    #particles-js {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
 
-                // Load Tailwind CDN
-                var tailwindScript = document.createElement('script');
-                tailwindScript.src = 'https://cdn.tailwindcss.com';
-                document.head.appendChild(tailwindScript);
-            }
-        </script>
-    <script defer src="/static/js/bundle.js"></script></head>
-    <body>
-        <noscript>You need to enable JavaScript to run this app.</noscript>
-        <div id="root"></div>
-        <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
 
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
+    header h1 {
+      color: var(--main);
+      font-weight: 900;
+    }
 
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
-        <a
-            id="emergent-badge"
-            target="_blank"
-            href="https://app.emergent.sh/?utm_source=emergent-badge"
-            style="
-                display: flex !important;
-                align-items: center !important;
-                position: fixed !important;
-                bottom: 20px;
-                right: 20px;
-                text-decoration: none;
-                padding: 6px 10px;
-                font-family: -apple-system, BlinkMacSystemFont,
-                    &quot;Segoe UI&quot;, Roboto, Oxygen, Ubuntu, Cantarell,
-                    &quot;Open Sans&quot;, &quot;Helvetica Neue&quot;,
-                    sans-serif !important;
-                font-size: 12px !important;
-                z-index: 9999 !important;
-                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
-                border-radius: 8px !important;
-                background-color: #ffffff !important;
-                border: 1px solid rgba(255, 255, 255, 0.25) !important;
-            "
-        >
-            <div
-                style="display: flex; flex-direction: row; align-items: center"
-            >
-                <img
-                    style="width: 20px; height: 20px; margin-right: 8px"
-                    src="https://avatars.githubusercontent.com/in/1201222?s=120&u=2686cf91179bbafbc7a71bfbc43004cf9ae1acea&v=4"
-                />
-                <p
-                    style="
-                        color: #000000;
-                        font-family: -apple-system, BlinkMacSystemFont,
-                            &quot;Segoe UI&quot;, Roboto, Oxygen, Ubuntu,
-                            Cantarell, &quot;Open Sans&quot;,
-                            &quot;Helvetica Neue&quot;, sans-serif !important;
-                        font-size: 12px !important;
-                        align-items: center;
-                        margin-bottom: 0;
-                    "
-                >
-                    Made with Emergent
-                </p>
-            </div>
-        </a>
-        <script>
-            !(function (t, e) {
-                var o, n, p, r;
-                e.__SV ||
-                    ((window.posthog = e),
-                    (e._i = []),
-                    (e.init = function (i, s, a) {
-                        function g(t, e) {
-                            var o = e.split(".");
-                            2 == o.length && ((t = t[o[0]]), (e = o[1])),
-                                (t[e] = function () {
-                                    t.push(
-                                        [e].concat(
-                                            Array.prototype.slice.call(
-                                                arguments,
-                                                0,
-                                            ),
-                                        ),
-                                    );
-                                });
-                        }
-                        ((p = t.createElement("script")).type =
-                            "text/javascript"),
-                            (p.crossOrigin = "anonymous"),
-                            (p.async = !0),
-                            (p.src =
-                                s.api_host.replace(
-                                    ".i.posthog.com",
-                                    "-assets.i.posthog.com",
-                                ) + "/static/array.js"),
-                            (r =
-                                t.getElementsByTagName(
-                                    "script",
-                                )[0]).parentNode.insertBefore(p, r);
-                        var u = e;
-                        for (
-                            void 0 !== a ? (u = e[a] = []) : (a = "posthog"),
-                                u.people = u.people || [],
-                                u.toString = function (t) {
-                                    var e = "posthog";
-                                    return (
-                                        "posthog" !== a && (e += "." + a),
-                                        t || (e += " (stub)"),
-                                        e
-                                    );
-                                },
-                                u.people.toString = function () {
-                                    return u.toString(1) + ".people (stub)";
-                                },
-                                o =
-                                    "init me ws ys ps bs capture je Di ks register register_once register_for_session unregister unregister_for_session Ps getFeatureFlag getFeatureFlagPayload isFeatureEnabled reloadFeatureFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSurveysLoaded onSessionId getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey canRenderSurveyAsync identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset get_distinct_id getGroups get_session_id get_session_replay_url alias set_config startSessionRecording stopSessionRecording sessionRecordingStarted captureException loadToolbar get_property getSessionProperty Es $s createPersonProfile Is opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing clear_opt_in_out_capturing Ss debug xs getPageViewId captureTraceFeedback captureTraceMetric".split(
-                                        " ",
-                                    ),
-                                n = 0;
-                            n < o.length;
-                            n++
-                        )
-                            g(u, o[n]);
-                        e._i.push([i, s, a]);
-                    }),
-                    (e.__SV = 1));
-            })(document, window.posthog || []);
-            posthog.init("phc_yJW1VjHGGwmCbbrtczfqqNxgBDbhlhOWcdzcIJEOTFE", {
-                api_host: "https://us.i.posthog.com",
-                person_profiles: "identified_only", // or 'always' to create profiles for anonymous users as well
-            });
-        </script>
-    </body>
+    nav a {
+      color: var(--text2);
+      margin-left: 20px;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+
+    nav a:hover {
+      color: var(--main);
+      text-shadow: 0 0 10px var(--main);
+    }
+
+    section {
+      padding: 100px 40px;
+      min-height: 100vh;
+      display: none;
+    }
+
+    section.active { display: block; }
+
+    .hero {
+      text-align: center;
+    }
+
+    .hero h2 {
+      font-size: 3rem;
+      margin-bottom: 20px;
+      color: var(--main);
+      text-shadow: 0 0 20px var(--main);
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      margin-bottom: 40px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 15px 30px;
+      margin: 10px;
+      background: linear-gradient(135deg, var(--main), #00aacc);
+      color: #000;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 0 20px var(--main);
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+      margin-top: 60px;
+    }
+
+    .card {
+      background: rgba(26,26,46,0.85);
+      padding: 30px;
+      border-radius: 16px;
+      border: 1px solid var(--mid);
+      transition: 0.3s;
+    }
+
+    .card:hover {
+      border-color: var(--main);
+      box-shadow: 0 0 25px rgba(0,217,255,0.4);
+      transform: translateY(-5px);
+    }
+
+    .card h3 { color: var(--main); margin-bottom: 15px; }
+
+    .price {
+      font-size: 2rem;
+      color: var(--main);
+      margin: 20px 0;
+    }
+
+    form {
+      max-width: 400px;
+      margin: auto;
+      background: rgba(26,26,46,0.9);
+      padding: 40px;
+      border-radius: 16px;
+    }
+
+    form input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      border: none;
+      outline: none;
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px;
+      background: rgba(0,0,0,0.6);
+      color: var(--text2);
+    }
+
+    @media(max-width:600px){
+      .hero h2 { font-size: 2.2rem; }
+      header { flex-direction: column; gap: 10px; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="particles-js"></div>
+
+<header>
+  <h1>ARXON NW</h1>
+  <nav>
+    <a href="#/">Ana Sayfa</a>
+    <a href="#/store">Store</a>
+    <a href="#/login">Login</a>
+    <a href="#/register">Register</a>
+    <a href="#/help">Help</a>
+  </nav>
+</header>
+
+<section id="home" class="active">
+  <div class="hero">
+    <h2>Kurt sürüsüne katıl. Güçlen.</h2>
+    <p>BoxMining dünyasında zirveye tırman. Güç, rekabet ve ödül burada.</p>
+    <a class="btn" onclick="copyIP()">IP Kopyala</a>
+    <a class="btn" href="https://discord.gg/HEEPr9k9uD" target="_blank">Discord</a>
+  </div>
+
+  <div class="cards">
+    <div class="card"><h3>⚡ Performans</h3><p>Lag yok. Güçlü altyapı.</p></div>
+    <div class="card"><h3>🐺 Kurt Teması</h3><p>Agresif, karanlık ve elit.</p></div>
+    <div class="card"><h3>💎 VIP Sistem</h3><p>Adil ama güçlü avantajlar.</p></div>
+  </div>
+</section>
+
+<section id="store">
+  <h2>VIP Paketleri</h2>
+  <div class="cards">
+    <div class="card"><h3>Bronze</h3><div class="price">₺50</div><p>Başlangıç avantajları</p><a class="btn">Satın Al</a></div>
+    <div class="card"><h3>Silver</h3><div class="price">₺100</div><p>Daha fazla yetki</p><a class="btn">Satın Al</a></div>
+    <div class="card"><h3>Gold</h3><div class="price">₺200</div><p>Güçlü özellikler</p><a class="btn">Satın Al</a></div>
+    <div class="card"><h3>Diamond</h3><div class="price">₺350</div><p>Elit kurt seviyesi</p><a class="btn">Satın Al</a></div>
+  </div>
+</section>
+
+<section id="login">
+  <h2>Giriş Yap</h2>
+  <form>
+    <input type="text" placeholder="Kullanıcı Adı">
+    <input type="password" placeholder="Şifre">
+    <button class="btn" type="submit">Giriş</button>
+  </form>
+</section>
+
+<section id="register">
+  <h2>Kayıt Ol</h2>
+  <form>
+    <input type="text" placeholder="Kullanıcı Adı">
+    <input type="email" placeholder="Email">
+    <input type="password" placeholder="Şifre">
+    <button class="btn" type="submit">Kayıt Ol</button>
+  </form>
+</section>
+
+<section id="help">
+  <h2>Yardım & Bilgi</h2>
+  <div class="cards">
+    <div class="card"><h3>SSS</h3><p>Sunucuya nasıl girerim? IP'yi kopyala ve Minecraft'a gir.</p></div>
+    <div class="card"><h3>Komutlar</h3><p>/spawn, /warp, /shop</p></div>
+    <div class="card"><h3>İletişim</h3><p>Discord üzerinden destek alabilirsin.</p></div>
+  </div>
+</section>
+
+<footer>
+  © 2026 Arxon NW • BoxMining Network
+</footer>
+
+<script>
+  function router(){
+    const hash = location.hash || '#/';
+    document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
+    if(hash === '#/') document.getElementById('home').classList.add('active');
+    if(hash === '#/store') document.getElementById('store').classList.add('active');
+    if(hash === '#/login') document.getElementById('login').classList.add('active');
+    if(hash === '#/register') document.getElementById('register').classList.add('active');
+    if(hash === '#/help') document.getElementById('help').classList.add('active');
+  }
+  window.addEventListener('hashchange', router);
+
+  function copyIP(){
+    navigator.clipboard.writeText('193.164.4.244');
+    alert('IP kopyalandı: 193.164.4.244');
+  }
+
+  particlesJS('particles-js',{
+    particles:{number:{value:80},color:{value:'#00d9ff'},shape:{type:'circle'},opacity:{value:0.5},size:{value:3},move:{enable:true,speed:2}},
+    interactivity:{events:{onhover:{enable:true,mode:'repulse'}}}
+  });
+</script>
+
+</body>
 </html>
