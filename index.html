@@ -1,266 +1,240 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <title>Arxon Network</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<title>Arxon Network</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&display=swap" rel="stylesheet">
 
-  <!-- FONT -->
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Orbitron,sans-serif}
 
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: Orbitron, sans-serif;
-    }
+body{
+  min-height:100vh;
+  color:#fff;
+  background:
+    linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.6)),
+    url("https://images.wallpaperscraft.com/image/single/minecraft_house_landscape_128512_1920x1080.jpg")
+    center/cover fixed no-repeat;
+  overflow-x:hidden;
+}
 
-    body {
-      min-height: 100vh;
-      color: #fff;
-      background:
-        linear-gradient(rgba(0,0,0,.65), rgba(0,0,0,.65)),
-        url("https://images.wallpaperscraft.com/image/single/minecraft_house_landscape_128512_1920x1080.jpg")
-        no-repeat center center fixed;
-      background-size: cover;
-    }
+/* FIRE PARTICLES */
+#fireCanvas{
+  position:fixed;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+}
 
-    /* NAVBAR */
-    nav {
-      position: fixed;
-      top: 0;
-      width: 100%;
-      padding: 18px 40px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: rgba(0,0,0,.45);
-      backdrop-filter: blur(10px);
-      z-index: 100;
-    }
+/* NAVBAR */
+nav{
+  position:fixed;
+  top:0;width:100%;
+  padding:18px 40px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:rgba(0,0,0,.45);
+  backdrop-filter:blur(10px);
+  z-index:10;
+}
+nav .logo{font-weight:800;font-size:22px}
+nav a{color:#fff;text-decoration:none;margin-left:18px;opacity:.85}
+nav a:hover{opacity:1}
 
-    nav .logo {
-      font-size: 22px;
-      font-weight: 800;
-      letter-spacing: 1px;
-    }
+/* HERO */
+.hero{
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  gap:24px;
+  text-align:center;
+  position:relative;
+  z-index:2;
+}
+.hero h1{font-size:56px;font-weight:800}
 
-    nav .links a {
-      margin-left: 20px;
-      text-decoration: none;
-      color: #fff;
-      font-weight: 600;
-      opacity: .85;
-    }
+.server-box{
+  background:rgba(0,0,0,.6);
+  padding:20px 30px;
+  border-radius:14px;
+}
+.ip{cursor:pointer;font-size:20px}
+.status{font-size:14px;margin-top:6px}
 
-    nav .links a:hover {
-      opacity: 1;
-    }
+/* AUTH */
+.auth-section{
+  max-width:420px;
+  margin:120px auto;
+  padding:36px 30px;
+  background:rgba(0,0,0,.65);
+  backdrop-filter:blur(10px);
+  border-radius:16px;
+  display:none;
+  position:relative;
+  z-index:2;
+}
+.auth-section h2{text-align:center;margin-bottom:20px}
 
-    /* HERO */
-    .hero {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      gap: 25px;
-    }
+.auth-form{display:flex;flex-direction:column;gap:14px}
+.auth-form input{
+  padding:12px;border:none;border-radius:10px;
+  background:#111;color:#fff
+}
+.auth-form button{
+  padding:12px;border:none;border-radius:10px;
+  background:#7c3aed;color:#fff;
+  font-weight:700;cursor:pointer
+}
 
-    .hero h1 {
-      font-size: 56px;
-      font-weight: 800;
-      text-shadow: 0 0 25px rgba(0,0,0,.8);
-    }
+.switch{text-align:center;margin-top:16px;font-size:14px}
+.switch a{color:#a855f7;text-decoration:none}
 
-    .server-box {
-      background: rgba(0,0,0,.55);
-      backdrop-filter: blur(8px);
-      padding: 20px 30px;
-      border-radius: 14px;
-      box-shadow: 0 0 30px rgba(0,0,0,.6);
-    }
+:target{display:block}
 
-    .ip {
-      font-size: 20px;
-      cursor: pointer;
-      user-select: none;
-    }
-
-    .status {
-      margin-top: 8px;
-      font-size: 14px;
-      opacity: .9;
-    }
-
-    /* AUTH */
-    .auth-section {
-      max-width: 420px;
-      margin: 120px auto;
-      padding: 40px 30px;
-      background: rgba(0,0,0,.6);
-      border-radius: 16px;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 0 30px rgba(0,0,0,.7);
-      display: none;
-    }
-
-    .auth-section h2 {
-      text-align: center;
-      font-size: 28px;
-      margin-bottom: 24px;
-    }
-
-    .auth-form {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-
-    .auth-form input {
-      padding: 12px 14px;
-      border-radius: 10px;
-      border: none;
-      outline: none;
-      background: #111;
-      color: #fff;
-    }
-
-    .auth-form button {
-      padding: 12px;
-      border-radius: 10px;
-      border: none;
-      background: #7c3aed;
-      color: #fff;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    .switch {
-      margin-top: 18px;
-      text-align: center;
-      font-size: 14px;
-    }
-
-    .switch a {
-      color: #a855f7;
-      text-decoration: none;
-      font-weight: 600;
-    }
-
-    /* TARGET MAGIC */
-    :target {
-      display: block;
-    }
-
-    /* COPY TOAST */
-    .toast {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: rgba(0,0,0,.8);
-      padding: 16px 26px;
-      border-radius: 12px;
-      opacity: 0;
-      pointer-events: none;
-      transition: .3s;
-    }
-
-    .toast.show {
-      opacity: 1;
-    }
-  </style>
+/* TOAST */
+.toast{
+  position:fixed;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  background:rgba(0,0,0,.85);
+  padding:14px 24px;
+  border-radius:12px;
+  opacity:0;
+  transition:.3s;
+  z-index:20;
+}
+.toast.show{opacity:1}
+</style>
 </head>
 
 <body>
 
-  <!-- NAVBAR -->
-  <nav>
-    <div class="logo">ARXON</div>
-    <div class="links">
-      <a href="#giris">Giriş</a>
-      <a href="#kayit">Kayıt</a>
-      <a href="https://discord.gg/HEEPr9k9uD" target="_blank">Discord</a>
-    </div>
-  </nav>
+<canvas id="fireCanvas"></canvas>
 
-  <!-- HERO -->
-  <section class="hero">
-    <h1>ARXON NETWORK</h1>
+<nav>
+  <div class="logo">ARXON</div>
+  <div>
+    <a href="#giris">Giriş</a>
+    <a href="#kayit">Kayıt</a>
+    <a href="https://discord.gg/HEEPr9k9uD" target="_blank">Discord</a>
+  </div>
+</nav>
 
-    <div class="server-box">
-      <div class="ip" onclick="copyIP()">193.164.4.244</div>
-      <div class="status" id="statusText">Sunucu kontrol ediliyor...</div>
-    </div>
-  </section>
+<section class="hero">
+  <h1>ARXON NETWORK</h1>
+  <div class="server-box">
+    <div class="ip" onclick="copyIP()">193.164.4.244</div>
+    <div class="status" id="statusText">Kontrol ediliyor...</div>
+  </div>
+</section>
 
-  <!-- GİRİŞ -->
-  <section id="giris" class="auth-section">
-    <h2>Giriş Yap</h2>
-    <form class="auth-form">
-      <input type="text" placeholder="Kullanıcı Adı" required>
-      <input type="password" placeholder="Şifre" required>
-      <button type="submit">Giriş Yap</button>
-    </form>
-    <p class="switch">
-      Hesabın yok mu?
-      <a href="#kayit">Kayıt Ol</a>
-    </p>
-  </section>
+<section id="giris" class="auth-section">
+  <h2>Giriş Yap</h2>
+  <form class="auth-form" onsubmit="login(event)">
+    <input id="loginUser" placeholder="Kullanıcı Adı" required>
+    <input id="loginPass" type="password" placeholder="Şifre" required>
+    <button>Giriş Yap</button>
+  </form>
+  <p class="switch">Hesabın yok mu? <a href="#kayit">Kayıt Ol</a></p>
+</section>
 
-  <!-- KAYIT -->
-  <section id="kayit" class="auth-section">
-    <h2>Kayıt Ol</h2>
-    <form class="auth-form">
-      <input type="text" placeholder="Kullanıcı Adı" required>
-      <input type="email" placeholder="E-Posta" required>
-      <input type="password" placeholder="Şifre" required>
-      <button type="submit">Kayıt Ol</button>
-    </form>
-    <p class="switch">
-      Zaten hesabın var mı?
-      <a href="#giris">Giriş Yap</a>
-    </p>
-  </section>
+<section id="kayit" class="auth-section">
+  <h2>Kayıt Ol</h2>
+  <form class="auth-form" onsubmit="register(event)">
+    <input id="regUser" placeholder="Kullanıcı Adı" required>
+    <input id="regMail" type="email" placeholder="E-Posta" required>
+    <input id="regPass" type="password" placeholder="Şifre" required>
+    <button>Kayıt Ol</button>
+  </form>
+  <p class="switch">Zaten hesabın var mı? <a href="#giris">Giriş Yap</a></p>
+</section>
 
-  <!-- TOAST -->
-  <div class="toast" id="toast">IP kopyalandı</div>
+<div class="toast" id="toast"></div>
 
-  <script>
-    const ip = "193.164.4.244";
-    const statusText = document.getElementById("statusText");
+<script>
+/* ===== SERVER STATUS ===== */
+const ip="193.164.4.244";
+const statusText=document.getElementById("statusText");
 
-    function copyIP() {
-      navigator.clipboard.writeText(ip);
-      const t = document.getElementById("toast");
-      t.classList.add("show");
-      setTimeout(() => t.classList.remove("show"), 1500);
-    }
+async function checkServer(){
+  try{
+    const r=await fetch("https://api.mcstatus.io/v2/status/java/"+ip);
+    const d=await r.json();
+    statusText.textContent=d.online
+      ? "🟢 Online | Oyuncu: "+d.players.online
+      : "🔴 Offline";
+  }catch{statusText.textContent="Durum alınamadı"}
+}
+checkServer(); setInterval(checkServer,10000);
 
-    async function checkServer() {
-      try {
-        const res = await fetch(
-          "https://api.mcstatus.io/v2/status/java/" + ip
-        );
-        const data = await res.json();
+/* ===== COPY ===== */
+function copyIP(){
+  navigator.clipboard.writeText(ip);
+  showToast("IP kopyalandı");
+}
 
-        if (data.online) {
-          statusText.innerText =
-            "🟢 Online | Oyuncu: " + data.players.online;
-        } else {
-          statusText.innerText = "🔴 Offline";
-        }
-      } catch {
-        statusText.innerText = "Durum alınamadı";
-      }
-    }
+/* ===== AUTH SAVE ===== */
+function register(e){
+  e.preventDefault();
+  const user=regUser.value;
+  const pass=regPass.value;
+  localStorage.setItem("user_"+user,pass);
+  showToast("Kayıt başarılı");
+  location.hash="#giris";
+}
 
-    checkServer();
-    setInterval(checkServer, 10000);
-  </script>
+function login(e){
+  e.preventDefault();
+  const u=loginUser.value;
+  const p=loginPass.value;
+  const saved=localStorage.getItem("user_"+u);
+  showToast(saved===p ? "Giriş başarılı" : "Hatalı bilgiler");
+}
+
+/* ===== TOAST ===== */
+function showToast(t){
+  const el=document.getElementById("toast");
+  el.textContent=t;
+  el.classList.add("show");
+  setTimeout(()=>el.classList.remove("show"),1500);
+}
+
+/* ===== FIRE PARTICLES ===== */
+const c=document.getElementById("fireCanvas");
+const ctx=c.getContext("2d");
+let w,h,particles=[];
+function resize(){w=c.width=innerWidth;h=c.height=innerHeight}
+window.onresize=resize; resize();
+
+for(let i=0;i<120;i++){
+  particles.push({
+    x:Math.random()*w,
+    y:h+Math.random()*h,
+    r:Math.random()*2+1,
+    v:Math.random()*1+0.5,
+    a:Math.random()
+  });
+}
+
+function fire(){
+  ctx.clearRect(0,0,w,h);
+  particles.forEach(p=>{
+    p.y-=p.v;
+    p.x+=Math.sin(p.y*0.01)*0.5;
+    if(p.y<0){p.y=h; p.x=Math.random()*w}
+    ctx.fillStyle=`rgba(255,140,0,${p.a})`;
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fill();
+  });
+  requestAnimationFrame(fire);
+}
+fire();
+</script>
 
 </body>
 </html>
