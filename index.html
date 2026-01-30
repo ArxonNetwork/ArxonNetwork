@@ -1,325 +1,253 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="tr" class="scroll-smooth">
 <head>
-<meta charset="UTF-8">
-<title>ARXON Network | Store</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-
-<style>
-:root{
-  --bg:#0a0c10;
-  --card:#141824;
-  --border:#22283a;
-  --accent:#00ff9c;
-  --accent2:#00bfff;
-  --text:#eaeaf0;
-  --muted:#9aa3b2;
-}
-*{box-sizing:border-box}
-body{
-  margin:0;
-  font-family:Inter,Arial;
-  background:var(--bg);
-  color:var(--text);
-  overflow-x:hidden;
-}
-
-/* LOADING */
-#loader{
-  position:fixed;
-  inset:0;
-  background:#000;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  z-index:9999;
-  flex-direction:column;
-}
-#loader h1{
-  color:var(--accent);
-  letter-spacing:2px;
-}
-.spinner{
-  width:50px;
-  height:50px;
-  border:4px solid #222;
-  border-top:4px solid var(--accent);
-  border-radius:50%;
-  animation:spin 1s linear infinite;
-  margin-top:20px;
-}
-@keyframes spin{to{transform:rotate(360deg)}}
-
-/* NAVBAR */
-.navbar{
-  background:#000;
-  border-bottom:1px solid var(--border);
-  position:sticky;
-  top:0;
-  z-index:1000;
-}
-.nav-inner{
-  max-width:1200px;
-  margin:auto;
-  padding:14px 20px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-}
-.logo{
-  font-weight:800;
-  color:var(--accent);
-}
-.menu{
-  display:flex;
-  gap:20px;
-}
-.menu button{
-  background:none;
-  border:none;
-  color:var(--muted);
-  cursor:pointer;
-}
-.menu button:hover{color:#fff}
-
-.nav-right{
-  display:flex;
-  gap:10px;
-}
-.btn{
-  padding:8px 14px;
-  border-radius:8px;
-  border:1px solid var(--border);
-  background:#0f1218;
-  color:#fff;
-  cursor:pointer;
-}
-.btn.primary{
-  background:linear-gradient(135deg,var(--accent),var(--accent2));
-  border:none;
-  color:#000;
-  font-weight:600;
-}
-
-/* HERO */
-.hero{
-  padding:100px 20px;
-  background:radial-gradient(circle at top,rgba(0,255,156,.15),transparent 60%);
-}
-.hero-inner{
-  max-width:1200px;
-  margin:auto;
-}
-.hero h1{
-  font-size:42px;
-  font-weight:800;
-}
-.hero p{color:var(--muted)}
-
-/* SECTIONS */
-.section{
-  max-width:1200px;
-  margin:auto;
-  padding:70px 20px;
-}
-.grid{
-  display:grid;
-  gap:20px;
-}
-.products{
-  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
-}
-
-/* PRODUCT */
-.product{
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:16px;
-  overflow:hidden;
-  transition:.25s;
-}
-.product:hover{
-  transform:translateY(-6px);
-  border-color:var(--accent);
-}
-.product img{
-  width:100%;
-  height:160px;
-  object-fit:cover;
-}
-.product .info{
-  padding:16px;
-}
-.price{
-  color:var(--accent);
-  font-weight:700;
-}
-.product button{
-  width:100%;
-  margin-top:12px;
-  padding:10px;
-  border:none;
-  border-radius:10px;
-  background:linear-gradient(135deg,var(--accent),var(--accent2));
-  cursor:pointer;
-  font-weight:600;
-}
-
-/* MODAL */
-.modal{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.7);
-  display:none;
-  align-items:center;
-  justify-content:center;
-  z-index:2000;
-}
-.modal.active{display:flex}
-.modal-box{
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:16px;
-  width:100%;
-  max-width:420px;
-  padding:30px;
-}
-.modal input{
-  width:100%;
-  margin-top:10px;
-  padding:12px;
-  background:#0f1218;
-  border:1px solid var(--border);
-  border-radius:10px;
-  color:#fff;
-}
-.modal button{
-  width:100%;
-  margin-top:12px;
-  padding:12px;
-  border:none;
-  border-radius:12px;
-  background:linear-gradient(135deg,var(--accent),var(--accent2));
-  font-weight:700;
-  cursor:pointer;
-}
-.close{
-  text-align:right;
-  cursor:pointer;
-  color:var(--muted);
-}
-
-/* FOOTER */
-footer{
-  background:#000;
-  border-top:1px solid var(--border);
-  padding:30px;
-  text-align:center;
-  color:var(--muted);
-}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ArvixCraft - Minecraft Sunucuları & Premium Ürünler</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    body { background-color: #0f0f11; color: #e5e7eb; font-family: 'Inter', system-ui, sans-serif; }
+    .hero-bg { background: linear-gradient(to bottom right, #1e293b, #0f172a); }
+  </style>
 </head>
-<body>
+<body class="antialiased">
 
-<!-- LOADING -->
-<div id="loader">
-  <h1>ARXON NETWORK</h1>
-  <div class="spinner"></div>
-</div>
+  <!-- Navbar -->
+  <nav class="bg-gray-950/90 backdrop-blur-md border-b border-gray-800 sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-16">
+        <!-- Logo -->
+        <div class="flex items-center">
+          <span class="text-2xl font-bold text-emerald-400">ARVIX<span class="text-white">CRAFT</span></span>
+        </div>
 
-<!-- NAVBAR -->
-<div class="navbar">
-  <div class="nav-inner">
-    <div class="logo">ARXON</div>
-    <div class="menu">
-      <button onclick="scrollToSection('hero')">Anasayfa</button>
-      <button onclick="scrollToSection('store')">Ürünler</button>
-      <button onclick="openLogin()">Giriş</button>
-    </div>
-    <div class="nav-right">
-      <button class="btn" onclick="openLogin()">Giriş Yap</button>
-      <button class="btn primary">Kayıt Ol</button>
-    </div>
-  </div>
-</div>
+        <!-- Menü (orta) -->
+        <div class="hidden md:flex space-x-8">
+          <a href="#" class="text-gray-300 hover:text-emerald-400 transition">Anasayfa</a>
+          <a href="#" class="text-gray-300 hover:text-emerald-400 transition">Sunucular</a>
+          <a href="#" class="text-gray-300 hover:text-emerald-400 transition">Ürünler</a>
+          <a href="#" class="text-gray-300 hover:text-emerald-400 transition">Kategoriler</a>
+          <a href="#" class="text-gray-300 hover:text-emerald-400 transition">Bakiye Yükle</a>
+          <a href="#" class="text-gray-300 hover:text-emerald-400 transition">Destek</a>
+        </div>
 
-<!-- HERO -->
-<section class="hero" id="hero">
-  <div class="hero-inner">
-    <h1>ARXON Network Store</h1>
-    <p>Premium Minecraft ürünleri ve VIP rütbeleri</p>
-    <button class="btn primary" onclick="scrollToSection('store')">Mağazaya Git</button>
-  </div>
-</section>
+        <!-- Sağ taraf -->
+        <div class="flex items-center space-x-4">
+          <div class="relative hidden md:block">
+            <input type="text" placeholder="Ürün ara..." class="bg-gray-800 border border-gray-700 rounded-full pl-4 pr-10 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+            <i class="fas fa-search absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+          </div>
 
-<!-- STORE -->
-<section class="section" id="store">
-  <h2>VIP Rütbeleri</h2>
-  <div class="grid products">
+          <button class="text-gray-300 hover:text-white">
+            <i class="fas fa-shopping-cart text-xl"></i>
+            <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full px-1.5 py-0.5">0</span>
+          </button>
 
-    <div class="product">
-      <img src="https://picsum.photos/400/300?vip">
-      <div class="info">
-        <h3>Arxon Vip</h3>
-        <div class="price">₺79.99</div>
-        <button onclick="buy('Arxon Vip')">Satın Al</button>
+          <button id="loginBtn" class="bg-emerald-600 hover:bg-emerald-500 px-5 py-2 rounded-lg font-medium transition">Giriş Yap</button>
+          <button class="hidden md:block bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-lg transition">Kayıt Ol</button>
+        </div>
       </div>
     </div>
+  </nav>
 
-    <div class="product">
-      <img src="https://picsum.photos/400/300?vipplus">
-      <div class="info">
-        <h3>Arxon Vip+</h3>
-        <div class="price">₺149.99</div>
-        <button onclick="buy('Arxon Vip+')">Satın Al</button>
+  <!-- Login Modal -->
+  <div id="loginModal" class="fixed inset-0 bg-black/70 flex items-center justify-center z-50 hidden">
+    <div class="bg-gray-900 p-8 rounded-xl border border-gray-700 w-full max-w-md relative">
+      <button id="closeModal" class="absolute top-4 right-4 text-gray-400 hover:text-white">
+        <i class="fas fa-times text-xl"></i>
+      </button>
+
+      <h2 class="text-2xl font-bold text-center mb-6 text-emerald-400">Hesabına Giriş Yap</h2>
+
+      <form class="space-y-5">
+        <div>
+          <label class="block text-sm mb-1">Kullanıcı Adı / E-posta</label>
+          <input type="text" class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 focus:outline-none focus:border-emerald-500" placeholder="kullaniciadi veya email@ornek.com" required/>
+        </div>
+
+        <div>
+          <label class="block text-sm mb-1">Şifre</label>
+          <input type="password" class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 focus:outline-none focus:border-emerald-500" placeholder="••••••••" required/>
+        </div>
+
+        <div class="flex items-center justify-between text-sm">
+          <label class="flex items-center">
+            <input type="checkbox" class="mr-2 accent-emerald-500"/>
+            Beni hatırla
+          </label>
+          <a href="#" class="text-emerald-400 hover:underline">Şifremi unuttum?</a>
+        </div>
+
+        <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 py-3 rounded-lg font-bold transition">Giriş Yap</button>
+      </form>
+
+      <p class="text-center mt-6 text-gray-400">
+        Hesabın yok mu? 
+        <a href="#" class="text-emerald-400 hover:underline">Kayıt Ol</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <section class="hero-bg py-20 md:py-32 text-center">
+    <div class="max-w-5xl mx-auto px-6">
+      <h1 class="text-4xl md:text-6xl font-extrabold mb-6 leading-tight">
+        <span class="text-emerald-400">ARVIXCRAFT</span> ile<br/>Minecraft Maceran Başlasın!
+      </h1>
+      <p class="text-xl md:text-2xl text-gray-300 mb-10">Premium rütbeler, jetonlar, kozmetikler ve daha fazlası tek tık uzağında.</p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="#" class="bg-emerald-600 hover:bg-emerald-500 px-10 py-5 rounded-xl text-lg font-bold transition">Hemen Bakiye Yükle</a>
+        <a href="#" class="border border-emerald-500 hover:bg-emerald-500/20 px-10 py-5 rounded-xl text-lg font-bold transition">Ürünleri İncele</a>
       </div>
     </div>
+  </section>
 
-  </div>
-</section>
+  <!-- Kategoriler -->
+  <section class="py-16 bg-gray-950">
+    <div class="max-w-7xl mx-auto px-6">
+      <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">Popüler Kategoriler</h2>
+      <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
+        <div class="bg-gray-800/50 border border-gray-700 rounded-xl p-6 text-center hover:border-emerald-500/50 transition group">
+          <i class="fas fa-crown text-5xl text-yellow-400 mb-4 group-hover:scale-110 transition"></i>
+          <h3 class="font-bold text-lg">Rütbeler</h3>
+        </div>
+        <div class="bg-gray-800/50 border border-gray-700 rounded-xl p-6 text-center hover:border-emerald-500/50 transition group">
+          <i class="fas fa-coins text-5xl text-amber-400 mb-4 group-hover:scale-110 transition"></i>
+          <h3 class="font-bold text-lg">Jeton Paketleri</h3>
+        </div>
+        <div class="bg-gray-800/50 border border-gray-700 rounded-xl p-6 text-center hover:border-emerald-500/50 transition group">
+          <i class="fas fa-paint-brush text-5xl text-purple-400 mb-4 group-hover:scale-110 transition"></i>
+          <h3 class="font-bold text-lg">Kozmetik</h3>
+        </div>
+        <!-- 3 tane daha örnek -->
+        <div class="bg-gray-800/50 border border-gray-700 rounded-xl p-6 text-center hover:border-emerald-500/50 transition group">
+          <i class="fas fa-server text-5xl text-blue-400 mb-4 group-hover:scale-110 transition"></i>
+          <h3 class="font-bold text-lg">Sunucu Paket</h3>
+        </div>
+        <div class="bg-gray-800/50 border border-gray-700 rounded-xl p-6 text-center hover:border-emerald-500/50 transition group">
+          <i class="fas fa-gem text-5xl text-cyan-400 mb-4 group-hover:scale-110 transition"></i>
+          <h3 class="font-bold text-lg">Elmas Paketleri</h3>
+        </div>
+        <div class="bg-gray-800/50 border border-gray-700 rounded-xl p-6 text-center hover:border-emerald-500/50 transition group">
+          <i class="fas fa-shield-alt text-5xl text-red-400 mb-4 group-hover:scale-110 transition"></i>
+          <h3 class="font-bold text-lg">Koruma & Güvenlik</h3>
+        </div>
+      </div>
+    </div>
+  </section>
 
-<!-- FOOTER -->
-<footer>
-  © 2026 ARXON Network
-</footer>
+  <!-- Öne Çıkan Ürünler -->
+  <section class="py-20">
+    <div class="max-w-7xl mx-auto px-6">
+      <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">Öne Çıkan Ürünler</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <!-- Örnek ürün kartı x4 -->
+        <div class="bg-gray-800/40 border border-gray-700 rounded-xl overflow-hidden hover:border-emerald-500 transition group">
+          <div class="h-48 bg-gradient-to-br from-gray-900 to-gray-800 flex items-center justify-center">
+            <i class="fas fa-crown text-8xl text-yellow-500/30 group-hover:text-yellow-400/70 transition"></i>
+          </div>
+          <div class="p-6">
+            <h3 class="font-bold text-xl mb-2">Legend Rütbe</h3>
+            <p class="text-emerald-400 text-2xl font-bold mb-4">199.90 TL</p>
+            <button class="w-full bg-emerald-600 hover:bg-emerald-500 py-3 rounded-lg font-medium transition">Satın Al</button>
+          </div>
+        </div>
 
-<!-- LOGIN MODAL -->
-<div class="modal" id="loginModal">
-  <div class="modal-box">
-    <div class="close" onclick="closeLogin()">✖</div>
-    <h3>Hesabına Giriş Yap</h3>
-    <input placeholder="Kullanıcı adı / E-posta">
-    <input type="password" placeholder="Şifre">
-    <button>Giriş Yap</button>
-  </div>
-</div>
+        <div class="bg-gray-800/40 border border-gray-700 rounded-xl overflow-hidden hover:border-emerald-500 transition group">
+          <div class="h-48 bg-gradient-to-br from-gray-900 to-gray-800 flex items-center justify-center">
+            <i class="fas fa-coins text-8xl text-amber-500/30 group-hover:text-amber-400/70 transition"></i>
+          </div>
+          <div class="p-6">
+            <h3 class="font-bold text-xl mb-2">50.000 Jeton</h3>
+            <p class="text-emerald-400 text-2xl font-bold mb-4">89.90 TL</p>
+            <button class="w-full bg-emerald-600 hover:bg-emerald-500 py-3 rounded-lg font-medium transition">Satın Al</button>
+          </div>
+        </div>
 
-<script>
-/* LOADER */
-window.addEventListener("load",()=>{
-  setTimeout(()=>document.getElementById("loader").style.display="none",1200);
-});
+        <!-- İki tane daha aynı yapıda koyabilirsin -->
 
-/* MODAL */
-function openLogin(){
-  document.getElementById("loginModal").classList.add("active");
-}
-function closeLogin(){
-  document.getElementById("loginModal").classList.remove("active");
-}
+        <div class="bg-gray-800/40 border border-gray-700 rounded-xl overflow-hidden hover:border-emerald-500 transition group">
+          <div class="h-48 bg-gradient-to-br from-gray-900 to-gray-800 flex items-center justify-center">
+            <i class="fas fa-paint-brush text-8xl text-purple-500/30 group-hover:text-purple-400/70 transition"></i>
+          </div>
+          <div class="p-6">
+            <h3 class="font-bold text-xl mb-2">Parti Efekt Paketi</h3>
+            <p class="text-emerald-400 text-2xl font-bold mb-4">59.90 TL</p>
+            <button class="w-full bg-emerald-600 hover:bg-emerald-500 py-3 rounded-lg font-medium transition">Satın Al</button>
+          </div>
+        </div>
 
-/* SCROLL */
-function scrollToSection(id){
-  document.getElementById(id).scrollIntoView({behavior:"smooth"});
-}
+        <div class="bg-gray-800/40 border border-gray-700 rounded-xl overflow-hidden hover:border-emerald-500 transition group">
+          <div class="h-48 bg-gradient-to-br from-gray-900 to-gray-800 flex items-center justify-center">
+            <i class="fas fa-gem text-8xl text-cyan-500/30 group-hover:text-cyan-400/70 transition"></i>
+          </div>
+          <div class="p-6">
+            <h3 class="font-bold text-xl mb-2">Mega Elmas Paketi</h3>
+            <p class="text-emerald-400 text-2xl font-bold mb-4">349.90 TL</p>
+            <button class="w-full bg-emerald-600 hover:bg-emerald-500 py-3 rounded-lg font-medium transition">Satın Al</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-/* BUY */
-function buy(item){
-  alert(item+" sepete eklendi (demo)");
-}
-</script>
+  <!-- Footer -->
+  <footer class="bg-black border-t border-gray-800 py-12">
+    <div class="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-10">
+      <div>
+        <h4 class="text-emerald-400 font-bold mb-4">ARVIXCRAFT</h4>
+        <p class="text-sm text-gray-400">Minecraft tutkunları için en iyi adres.</p>
+      </div>
+      <div>
+        <h4 class="font-bold mb-4">Hızlı Linkler</h4>
+        <ul class="space-y-2 text-sm text-gray-400">
+          <li><a href="#" class="hover:text-emerald-400">Anasayfa</a></li>
+          <li><a href="#" class="hover:text-emerald-400">Ürünler</a></li>
+          <li><a href="#" class="hover:text-emerald-400">Bakiye Yükle</a></li>
+          <li><a href="#" class="hover:text-emerald-400">Destek</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="font-bold mb-4">Hesap</h4>
+        <ul class="space-y-2 text-sm text-gray-400">
+          <li><a href="#" class="hover:text-emerald-400">Giriş Yap</a></li>
+          <li><a href="#" class="hover:text-emerald-400">Kayıt Ol</a></li>
+          <li><a href="#" class="hover:text-emerald-400">Şifremi Unuttum</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="font-bold mb-4">Bizi Takip Et</h4>
+        <div class="flex space-x-4">
+          <a href="#" class="text-gray-400 hover:text-emerald-400"><i class="fab fa-discord text-2xl"></i></a>
+          <a href="#" class="text-gray-400 hover:text-emerald-400"><i class="fab fa-instagram text-2xl"></i></a>
+          <a href="#" class="text-gray-400 hover:text-emerald-400"><i class="fab fa-twitter text-2xl"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="text-center text-gray-500 text-sm mt-12 border-t border-gray-800 pt-8">
+      © 2026 ArvixCraft. Tüm hakları saklıdır. | Minecraft tescilli markadır.
+    </div>
+  </footer>
+
+  <!-- Modal JS -->
+  <script>
+    const loginBtn = document.getElementById('loginBtn');
+    const loginModal = document.getElementById('loginModal');
+    const closeModal = document.getElementById('closeModal');
+
+    loginBtn.addEventListener('click', () => {
+      loginModal.classList.remove('hidden');
+    });
+
+    closeModal.addEventListener('click', () => {
+      loginModal.classList.add('hidden');
+    });
+
+    loginModal.addEventListener('click', (e) => {
+      if (e.target === loginModal) loginModal.classList.add('hidden');
+    });
+  </script>
 
 </body>
 </html>
