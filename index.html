@@ -1,359 +1,977 @@
+
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="tr" class="dark webp webp-alpha webp-animation webp-lossless">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ArxonNetwork | Mavi Uzay</title>
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
-<style>
-:root{
---primary:#00bfff;
---primary-dark:#0077b6;
---accent:#48cae4;
---bg:#020611;
---glass:rgba(10,25,50,.75);
---border:rgba(72,202,228,.25);
---text:#fff;
---muted:#9bbcd1;
---success:#00ff9d;
---discord:#5865F2;
-}
-
-*{margin:0;padding:0;box-sizing:border-box}
-body{
-font-family:Inter,sans-serif;
-background:radial-gradient(circle at top,#031634,#020611 70%);
-color:var(--text);
-overflow-x:hidden;
-}
-
-canvas{position:fixed;inset:0;z-index:-1}
-
-nav{
-position:fixed;top:0;width:100%;
-padding:15px 5%;
-display:flex;
-justify-content:space-between;
-align-items:center;
-background:rgba(2,6,17,.85);
-backdrop-filter:blur(16px);
-border-bottom:1px solid var(--border);
-z-index:1000;
-}
-.nav-brand{display:flex;align-items:center;gap:12px;cursor:pointer}
-.nav-brand img{height:42px}
-.nav-brand span{
-font-family:Rajdhani;
-font-size:1.6rem;
-font-weight:800;
-}
-.nav-menu{display:flex;gap:25px;align-items:center}
-.nav-item{
-font-family:Rajdhani;
-font-weight:700;
-cursor:pointer;
-color:var(--muted);
-transition:.3s;
-}
-.nav-item:hover{color:#fff}
-
-.btn{
-padding:12px 30px;
-border-radius:40px;
-font-family:Rajdhani;
-font-weight:700;
-cursor:pointer;
-border:none;
-color:white;
-background:linear-gradient(90deg,var(--primary),var(--primary-dark));
-box-shadow:0 0 25px rgba(0,191,255,.35);
-transition:.35s;
-}
-.btn:hover{
-transform:scale(1.08);
-box-shadow:0 0 40px rgba(72,202,228,.7);
-}
-.btn-discord{
-background:var(--discord);
-box-shadow:0 0 25px rgba(88,101,242,.6);
-}
-
-.page{display:none;padding-top:120px;min-height:100vh;animation:fade .5s}
-.page.active{display:block}
-@keyframes fade{from{opacity:0;transform:translateY(15px)}to{opacity:1}}
-
-.hero{
-text-align:center;
-max-width:1100px;
-margin:auto;
-padding:40px 20px;
-}
-.hero img{
-width:200px;
-margin-bottom:10px;
-animation:float 6s ease-in-out infinite;
-filter:drop-shadow(0 0 35px rgba(72,202,228,.5));
-}
-@keyframes float{50%{transform:translateY(-18px)}}
-.hero h1{
-font-family:Rajdhani;
-font-size:clamp(3rem,6vw,4.8rem);
-background:linear-gradient(135deg,#fff,var(--accent));
--webkit-background-clip:text;
--webkit-text-fill-color:transparent;
-margin-bottom:10px;
-}
-.hero p{
-color:var(--muted);
-max-width:700px;
-margin:20px auto 35px;
-}
-.hero .actions{display:flex;gap:20px;justify-content:center;flex-wrap:wrap}
-
-.container{max-width:1200px;margin:auto;padding:20px}
-.section-title{text-align:center;margin-bottom:50px}
-.section-title h2{font-family:Rajdhani;font-size:3rem}
-
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-gap:30px;
-}
-.card{
-background:var(--glass);
-border:1px solid var(--border);
-border-radius:16px;
-overflow:hidden;
-transition:.4s;
-}
-.card:hover{
-transform:translateY(-12px);
-box-shadow:0 25px 60px rgba(0,0,0,.6);
-}
-.card img{width:100%;height:180px;object-fit:cover}
-.card-body{padding:25px;text-align:center}
-.card h3{font-family:Rajdhani;font-size:1.8rem}
-.card p{color:var(--muted);margin:10px 0 20px}
-
-.wiki{
-display:grid;
-grid-template-columns:260px 1fr;
-gap:30px;
-}
-.wiki-sidebar{
-background:var(--glass);
-border:1px solid var(--border);
-border-radius:12px;
-padding:20px;
-}
-.wiki-link{
-display:block;
-padding:12px;
-margin-bottom:6px;
-border-radius:8px;
-cursor:pointer;
-color:var(--muted);
-transition:.3s;
-}
-.wiki-link.active,.wiki-link:hover{
-background:rgba(72,202,228,.15);
-color:#fff;
-}
-.wiki-content{
-background:var(--glass);
-border:1px solid var(--border);
-border-radius:12px;
-padding:35px;
-}
-
-.faq-item{
-background:var(--glass);
-border:1px solid var(--border);
-border-radius:10px;
-margin-bottom:15px;
-}
-.faq-header{
-padding:18px;
-cursor:pointer;
-font-weight:600;
-}
-.faq-content{
-max-height:0;
-overflow:hidden;
-padding:0 18px;
-color:var(--muted);
-transition:.3s;
-}
-.faq-item.open .faq-content{
-padding:15px 18px;
-max-height:200px;
-}
-
-#toast{
-position:fixed;
-top:90px;right:20px;
-background:rgba(0,255,157,.15);
-border:1px solid var(--success);
-color:var(--success);
-padding:15px 20px;
-border-radius:10px;
-font-family:Rajdhani;
-font-weight:700;
-display:none;
-}
-
-footer{
-text-align:center;
-padding:50px 20px;
-border-top:1px solid var(--border);
-background:#01030a;
-}
-footer img{height:40px;opacity:.8}
-footer p{color:#6fa3c7;margin-top:15px}
-footer span{
-display:block;
-margin-top:10px;
-font-family:Rajdhani;
-color:var(--accent);
-letter-spacing:2px;
-}
-
-@media(max-width:900px){
-.wiki{grid-template-columns:1fr}
-}
-</style>
-</head>
-
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="author" content="Fırat KAYA">
+	<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?cache=1738229915">
+	
+	<title>Elmas Oyuncu - Her zaman en iyisi!</title>
+	<meta name="description" content="" />
+	<link rel="canonical" href="https://www.elmasoyuncu.me/" />
+	<meta property="og:type" content="website" />
+	<meta property="og:title" content="Elmas Oyuncu - Her zaman en iyisi!" />
+	<meta property="og:description" content="" />
+	<meta property="og:url" content="https://www.elmasoyuncu.me/" />
+	<meta property="og:site_name" content="Elmas Oyuncu" />
+		
+	<!-- CSRF -->
+	<meta name="csrf-token" content="ca2bfb86df392ea87052a80b2ee4777932c60f016f4d2f84139ddf7a7db5459f">
+	
+	<link rel="preload" href="/assets/cobalt/js/mod.min.1770076216.js" as="script">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous" as="style">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@1.4.0/dist/select2-bootstrap4.min.css">
+	
+	<script src="/assets/cobalt/js/mod.min.1770076216.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+	<link rel="stylesheet" href="/assets/cobalt/css/prism_dark.1770076214.css">
+	<link rel="stylesheet" href="/assets/cobalt/css/spoiler.1770076214.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+	<link rel="stylesheet" href="/assets/cobalt/css/cobalt.1770076214.css">
+	<link rel="preload" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+		<style>
+		:root {
+			--p-color: #3fa3dc;
+		}
+		
+		/* Primary Color */
+		.discord-text .st0, .status-text path, .discord-icon .st0, .status-icon path {
+			fill: var(--p-color) !important;
+		}
+		
+		.swal2-icon.swal2-info, .cobalt-update-box .update-icon, .header-theme, .news-title, .top-text, .error-title, .lr-title, .p-icon, .theme-text, .other-btn:after, .other-btn:focus:after, .footer-text-header:after, .widget-header-txt:after, .discord-text .icon:after, .status-text .icon:after, .wiki-page-card span strong, .dropdown-item.d-header, .rules-menu .active span, .rules-menu .active i, .welcome-title {
+			color: var(--p-color) !important;
+		}
+		
+		a, a:hover, a:focus {
+			color: var(--p-color)
+		}
+		
+		.color-overlay {
+			background: linear-gradient(var(--p-color), #101010);
+		}
+		
+		.swal2-icon.swal2-info, .page-item.active .page-link, .user-nav-link.active, .profile-about-box, .rules-menu-link.active {
+			border-color: var(--p-color) !important;
+		}
+		
+		.swal2-styled.swal2-confirm, .widget-header-txt:after, .discord-text .icon:after, .status-text .icon:after, .nav-link.store-link, .footer-text-header:after, .badge-theme, #toast-container, .progress-bar, .login-overlay, .register-overlay, .vote-tabs .btn.btn-theme.active, .p-color-overlay, .modal-header, .btn-theme, .button-checkbox > .active, .spoiler .spoiler-toggle, .spoiler .spoiler-title, .page-item.active .page-link, .btn.profile-btn.active:after, .cc-window.cc-floating .cc-highlight .cc-btn.cc-allow {
+			background-color: var(--p-color) !important;
+		}
+		
+		.swal2-styled.swal2-confirm:hover, .spoiler .spoiler-toggle:hover, .spoiler .spoiler-title:hover, .btn-theme:hover {
+			background-color: var(--p-color) !important;
+			opacity: 0.9 !important;
+		}
+		
+		.wiki-menu .active.dropdown-toggle::after {
+			border-top-color: var(--p-color) !important;
+			border-bottom-color: var(--p-color) !important;
+		}
+		
+		/* Header */
+		.header:after {
+			height: 227.5px;
+			background: linear-gradient(rgba(0, 0, 0, 0.1), transparent);
+		}
+		
+		.header:before {
+			background: linear-gradient(rgba(0, 0, 0, 0.1), #101010);
+		}
+		
+		.header {
+			background-position: center center !important
+		}
+		
+		@media (min-width: 769px) {
+			.header {
+				height: 475px
+			}
+		}
+		
+		@media (max-width: 768px) {
+			.header {
+				height: 340px
+			}
+		}
+		
+		@media (min-width: 769px) {
+			.logo {
+				height: 200px;
+				margin-top: 127.5px
+			}
+		}
+		
+		@media (max-width: 768px) {
+			.logo {
+				height: 130px;
+				margin-top: 90px
+			}
+		}
+		
+		.status-text, .discord-text {
+			margin-top: 203.5px
+		}
+		
+		@media (max-width: 1100px) {
+			.status-box-container .text, .discord-box-container .text {
+				display: none
+			}
+		}
+		
+		.line-scale > div {
+			background-color: #FFFFFF;
+		}
+		
+		/* Other */
+		.login-overlay, .register-overlay {
+			opacity: 0.5 !important
+		}
+		
+		.navbar-nav .nav-item:first-child {
+			margin-left: -15px !important
+		}
+		
+		.webp .header {
+			background: url('/assets/core/images/uploads/5e4d1c09a87ae740f28c6ccf3d900c7d.jpeg?cache=1738229915') no-repeat;
+		}
+		
+		.no-webp .header {
+			background: url('/assets/core/images/uploads/5e4d1c09a87ae740f28c6ccf3d900c7d.jpeg?cache=1738229915') no-repeat;
+		}
+		
+		.store-box {
+			border: 3px solid var(--p-color);
+			box-shadow: 0 0 10px rgb(22 132 162 / 50%);
+		}
+		
+		.webp .store-box {
+			background: linear-gradient(to bottom, rgba(63 163 220 / 70%), rgba(63 163 220 / 70%)), url(https://cobalt.coldfiredzn.com/uploads/4642441007f22e380696591276191f939066fd81store_box_img.webp) no-repeat center;
+		}
+		
+		.no-webp .store-box {
+			background: linear-gradient(to bottom, rgba(63 163 220 / 70%), rgba(63 163 220 / 70%)), url(/uploads/bg-optifine-2-5e0d264068f316e2e8be28a0907ebbf9.png) no-repeat center;
+		}
+		
+		.navbar-bottom .store-link:after, .navbar-bottom .store-link:focus:after, .navbar-top-new .store-link:after, .navbar-top-new .store-link:focus:after {
+			box-shadow: 0px 0px 12px 0px var(--p-color)
+		}
+		
+		.p-image-frame {
+			z-index: 1;
+			opacity: 0.7
+		}
+		
+		span.select2-selection.select2-selection--multiple {
+			color: rgb(189, 189, 189) !important;
+			background: #202020 !important;
+			border: none;
+		}
+		
+		li.select2-selection__choice {
+			color: rgb(189, 189, 189) !important;
+			background: #202020 !important;
+			border: none !important;
+		}
+		
+		ul#select2-input-4-results {
+			background: #1b1b1b;
+		}
+		
+		.select2-results__option--highlighted {
+			background: #202020 !important;
+		}
+		
+		.select2-results__option[aria-selected=true] {
+			background: #101010 !important;
+		}
+		
+		span.select2-selection.select2-selection--single {
+			color: rgb(189, 189, 189) !important;
+			background: #202020 !important;
+			border: none;
+		}
+		
+		.table-hover tbody tr:hover {
+			color: rgb(189, 189, 189) !important;
+			background: rgba(0, 0, 0, 0) !important;
+		}
+		
+		.square {
+			border-radius: 15% !important;
+		}
+		
+		li.list-group-item > a {
+			color: rgb(189, 189, 189) !important;
+		}
+		
+		li.list-group-item {
+			border: none;
+			background: #202020;
+		}
+		
+		li.list-group-item.active {
+			background: #161616;
+			border: none;
+		}
+		
+		td.text-start.table-header {
+			background: #101010;
+		}
+		
+		a.nav-link.active {
+			background: #161616 !important;
+		}
+	</style>
+	
+		
+			
+	<!-- CUSTOM CSS -->
+	<style type="text/css">
+			</style>
+	
+	<!-- ROLE CSS -->
+	<style type="text/css">
+						
+								
+								
+					</style>
+	
+	</head>
 <body>
 
-<canvas id="stars"></canvas>
-<div id="toast">IP Adresi başarı ile kopyalandı, maceraya katıl!</div>
-
-<nav>
-<div class="nav-brand" onclick="show('home')">
-<img src="https://i.imgur.com/ttb7rA1.png">
-<span>ARXON NETWORK</span>
-</div>
-<div class="nav-menu">
-<div class="nav-item" onclick="show('home')">Ana Sayfa</div>
-<div class="nav-item" onclick="show('store')">Mağaza</div>
-<div class="nav-item" onclick="show('wiki')">Wiki</div>
-<div class="nav-item" onclick="show('faq')">SSS</div>
-<a class="btn btn-discord" href="#" target="_blank">
-<i class="fa-brands fa-discord"></i> Discord
-</a>
-</div>
+<nav class="navbar navbar-expand-lg navbar-theme navbar-double navbar-top-new" style="">
+	<div class="container">
+		<button class="navbar-toggler nav-link" type="button"><i class="fa-solid fa-bars"></i> Menu</button>
+		<div class="status-icon">
+			<svg class="creeper" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<path fill-rule="evenodd" clip-rule="evenodd" d="M10.6669 6.13443L10.165 5.77922C9.44862 5.27225 8.59264 5 7.71504 5H7.10257C6.69838 5 6.29009 5.02549 5.90915 5.16059C3.52645 6.00566 1.88749 9.09504 2.00604 16.1026C2.02992 17.5145 2.3603 19.075 3.63423 19.6842C4.03121 19.8741 4.49667 20 5.02671 20C5.66273 20 6.1678 19.8187 6.55763 19.5632C6.96641 19.2953 7.32633 18.9471 7.68612 18.599C8.13071 18.1688 8.57511 17.7389 9.11125 17.4609C9.69519 17.1581 10.3434 17 11.0011 17H12.9989C13.6566 17 14.3048 17.1581 14.8888 17.4609C15.4249 17.7389 15.8693 18.1688 16.3139 18.599C16.6737 18.9471 17.0336 19.2953 17.4424 19.5632C17.8322 19.8187 18.3373 20 18.9733 20C19.5033 20 19.9688 19.8741 20.3658 19.6842C21.6397 19.075 21.9701 17.5145 21.994 16.1026C22.1125 9.09503 20.4735 6.00566 18.0908 5.16059C17.7099 5.02549 17.3016 5 16.8974 5H16.2849C15.4074 5 14.5514 5.27225 13.8351 5.77922L13.3332 6.13441C12.9434 6.41029 12.4776 6.55844 12 6.55844C11.5225 6.55844 11.0567 6.41029 10.6669 6.13443ZM16.75 9C17.1642 9 17.5 9.33579 17.5 9.75C17.5 10.1642 17.1642 10.5 16.75 10.5C16.3358 10.5 16 10.1642 16 9.75C16 9.33579 16.3358 9 16.75 9ZM7.5 9.25C7.91421 9.25 8.25 9.58579 8.25 10V10.75H9C9.41421 10.75 9.75 11.0858 9.75 11.5C9.75 11.9142 9.41421 12.25 9 12.25H8.25V13C8.25 13.4142 7.91421 13.75 7.5 13.75C7.08579 13.75 6.75 13.4142 6.75 13V12.25H6C5.58579 12.25 5.25 11.9142 5.25 11.5C5.25 11.0858 5.58579 10.75 6 10.75H6.75V10C6.75 9.58579 7.08579 9.25 7.5 9.25ZM19 11.25C19 11.6642 18.6642 12 18.25 12C17.8358 12 17.5 11.6642 17.5 11.25C17.5 10.8358 17.8358 10.5 18.25 10.5C18.6642 10.5 19 10.8358 19 11.25ZM15.25 12C15.6642 12 16 11.6642 16 11.25C16 10.8358 15.6642 10.5 15.25 10.5C14.8358 10.5 14.5 10.8358 14.5 11.25C14.5 11.6642 14.8358 12 15.25 12ZM17.5 12.75C17.5 12.3358 17.1642 12 16.75 12C16.3358 12 16 12.3358 16 12.75C16 13.1642 16.3358 13.5 16.75 13.5C17.1642 13.5 17.5 13.1642 17.5 12.75Z" fill="#1C274C"/>
+			</svg>
+		</div>
+		<a href="https://discord.gg/elmasoyuncu" target="_blank">
+			<div class="discord-icon">
+				<svg class="discord" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 245 240">
+					<path class="st0" d="M104.4 103.9c-5.7 0-10.2 5-10.2 11.1s4.6 11.1 10.2 11.1c5.7 0 10.2-5 10.2-11.1.1-6.1-4.5-11.1-10.2-11.1zM140.9 103.9c-5.7 0-10.2 5-10.2 11.1s4.6 11.1 10.2 11.1c5.7 0 10.2-5 10.2-11.1s-4.5-11.1-10.2-11.1z">
+					</path>
+					<path class="st0"
+					      d="M189.5 20h-134C44.2 20 35 29.2 35 40.6v135.2c0 11.4 9.2 20.6 20.5 20.6h113.4l-5.3-18.5 12.8 11.9 12.1 11.2 21.5 19V40.6c0-11.4-9.2-20.6-20.5-20.6zm-38.6 130.6s-3.6-4.3-6.6-8.1c13.1-3.7 18.1-11.9 18.1-11.9-4.1 2.7-8 4.6-11.5 5.9-5 2.1-9.8 3.5-14.5 4.3-9.6 1.8-18.4 1.3-25.9-.1-5.7-1.1-10.6-2.7-14.7-4.3-2.3-.9-4.8-2-7.3-3.4-.3-.2-.6-.3-.9-.5-.2-.1-.3-.2-.4-.3-1.8-1-2.8-1.7-2.8-1.7s4.8 8 17.5 11.8c-3 3.8-6.7 8.3-6.7 8.3-22.1-.7-30.5-15.2-30.5-15.2 0-32.2 14.4-58.3 14.4-58.3 14.4-10.8 28.1-10.5 28.1-10.5l1 1.2c-18 5.2-26.3 13.1-26.3 13.1s2.2-1.2 5.9-2.9c10.7-4.7 19.2-6 22.7-6.3.6-.1 1.1-.2 1.7-.2 6.1-.8 13-1 20.2-.2 9.5 1.1 19.7 3.9 30.1 9.6 0 0-7.9-7.5-24.9-12.7l1.4-1.6s13.7-.3 28.1 10.5c0 0 14.4 26.1 14.4 58.3 0 0-8.5 14.5-30.6 15.2z">
+					</path>
+				</svg>
+			</div>
+		</a>
+		<div class="collapse navbar-collapse" id="navbar">
+			<ul class="navbar-nav mx-auto">
+															<li class="nav-item active">
+							<a class="nav-link" href="/" >
+								<span class="nav-link-icon d-md-none d-lg-inline-block">
+									<i class="fas fa-home" style="font-size: 1.125rem;"></i>
+								</span>
+								<span class="nav-link-title">
+									Anasayfa								</span>
+							</a>
+						</li>
+																				<li class="nav-item ">
+							<a class="nav-link" href="/store" >
+								<span class="nav-link-icon d-md-none d-lg-inline-block">
+									<i class="fas fa-shopping-cart" style="font-size: 1.125rem;"></i>
+								</span>
+								<span class="nav-link-title">
+									Mağaza								</span>
+							</a>
+						</li>
+																				<li class="nav-item ">
+							<a class="nav-link" href="/help" >
+								<span class="nav-link-icon d-md-none d-lg-inline-block">
+									<i class="fas fa-question-circle" style="font-size: 1.125rem;"></i>
+								</span>
+								<span class="nav-link-title">
+									Yardım								</span>
+							</a>
+						</li>
+																				<li class="nav-item ">
+							<a class="nav-link" href="/support/tickets" >
+								<span class="nav-link-icon d-md-none d-lg-inline-block">
+									<i class="fas fa-life-ring" style="font-size: 1.125rem;"></i>
+								</span>
+								<span class="nav-link-title">
+									Destek								</span>
+							</a>
+						</li>
+													
+									<li class="nav-item ">
+						<a class="nav-link" href="/login/">
+							<i class="fa fa-sign-in"></i>
+							Giriş Yap						</a>
+					</li>
+							</ul>
+		</div>
+	</div>
 </nav>
-
-<section id="home" class="page active">
-<div class="hero">
-<img src="https://i.imgur.com/3bmo64B.png">
-<h1>MAVİ EVREN BAŞLIYOR. HAZIRMISIN?</h1>
-<p>Arxon Network ile Savaşmaya Hazır Ol!</p>
-<div class="actions">
-<button class="btn" onclick="copyIP()">OYNA.BLUEPROJECT.TR</button>
-<a class="btn btn-discord" href="#" target="_blank">DISCORD</a>
+<div class="color-overlay">
+	<div class="header" id="header-pjs" style="opacity: 0.7; z-index: 1"></div>
 </div>
+<div class="logo-ds-flex">
+	<div class="status-box-container">
+		<a href="#!" class="status-text" >
+			<div class="text">
+				<div class="top-text">
+											<span>0 oyuncu aktif</span>
+									</div>
+				<div class="bottom-text">
+											<div class="reel-1"><span id="ip" data-toggle="copyip" data-clipboard-action="copy" data-clipboard-text="mc.elmasoyuncu.me">mc.elmasoyuncu.me</span></div>
+						<div class="reel-1" data-toggle="copyip" data-clipboard-action="copy" data-clipboard-text="mc.elmasoyuncu.me">Sunucu Adresini Kopyala</div>
+									</div>
+			</div>
+			<div class="icon">
+				<div class="icon-wrapper">
+					<svg class="creeper" height="1em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<path fill-rule="evenodd" clip-rule="evenodd" d="M10.6669 6.13443L10.165 5.77922C9.44862 5.27225 8.59264 5 7.71504 5H7.10257C6.69838 5 6.29009 5.02549 5.90915 5.16059C3.52645 6.00566 1.88749 9.09504 2.00604 16.1026C2.02992 17.5145 2.3603 19.075 3.63423 19.6842C4.03121 19.8741 4.49667 20 5.02671 20C5.66273 20 6.1678 19.8187 6.55763 19.5632C6.96641 19.2953 7.32633 18.9471 7.68612 18.599C8.13071 18.1688 8.57511 17.7389 9.11125 17.4609C9.69519 17.1581 10.3434 17 11.0011 17H12.9989C13.6566 17 14.3048 17.1581 14.8888 17.4609C15.4249 17.7389 15.8693 18.1688 16.3139 18.599C16.6737 18.9471 17.0336 19.2953 17.4424 19.5632C17.8322 19.8187 18.3373 20 18.9733 20C19.5033 20 19.9688 19.8741 20.3658 19.6842C21.6397 19.075 21.9701 17.5145 21.994 16.1026C22.1125 9.09503 20.4735 6.00566 18.0908 5.16059C17.7099 5.02549 17.3016 5 16.8974 5H16.2849C15.4074 5 14.5514 5.27225 13.8351 5.77922L13.3332 6.13441C12.9434 6.41029 12.4776 6.55844 12 6.55844C11.5225 6.55844 11.0567 6.41029 10.6669 6.13443ZM16.75 9C17.1642 9 17.5 9.33579 17.5 9.75C17.5 10.1642 17.1642 10.5 16.75 10.5C16.3358 10.5 16 10.1642 16 9.75C16 9.33579 16.3358 9 16.75 9ZM7.5 9.25C7.91421 9.25 8.25 9.58579 8.25 10V10.75H9C9.41421 10.75 9.75 11.0858 9.75 11.5C9.75 11.9142 9.41421 12.25 9 12.25H8.25V13C8.25 13.4142 7.91421 13.75 7.5 13.75C7.08579 13.75 6.75 13.4142 6.75 13V12.25H6C5.58579 12.25 5.25 11.9142 5.25 11.5C5.25 11.0858 5.58579 10.75 6 10.75H6.75V10C6.75 9.58579 7.08579 9.25 7.5 9.25ZM19 11.25C19 11.6642 18.6642 12 18.25 12C17.8358 12 17.5 11.6642 17.5 11.25C17.5 10.8358 17.8358 10.5 18.25 10.5C18.6642 10.5 19 10.8358 19 11.25ZM15.25 12C15.6642 12 16 11.6642 16 11.25C16 10.8358 15.6642 10.5 15.25 10.5C14.8358 10.5 14.5 10.8358 14.5 11.25C14.5 11.6642 14.8358 12 15.25 12ZM17.5 12.75C17.5 12.3358 17.1642 12 16.75 12C16.3358 12 16 12.3358 16 12.75C16 13.1642 16.3358 13.5 16.75 13.5C17.1642 13.5 17.5 13.1642 17.5 12.75Z" fill="#1C274C"/>
+					</svg>
+				</div>
+			</div>
+		</a>
+	</div>
+	<div class="logo-container">
+		<a id="logo-link" href="/">
+			<picture>
+				<source srcset="/assets/core/images/uploads/2be16a5953f51f99c75df84d448698b2.png?cache=1738229915" type="image/webp">
+				<source srcset="/assets/core/images/uploads/2be16a5953f51f99c75df84d448698b2.png?cache=1738229915">
+				<img class="logo" alt="logo" src='/assets/core/images/uploads/2be16a5953f51f99c75df84d448698b2.png?cache=1738229915'/>
+			</picture>
+		</a>
+	</div>
+	<div class="discord-box-container">
+		<a href="https://discord.gg/elmasoyuncu" target="_blank">
+			<div class="discord-text">
+				<div class="icon">
+					<div class="icon-wrapper">
+						<svg class="discord" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 245 240">
+							<path class="st0" d="M104.4 103.9c-5.7 0-10.2 5-10.2 11.1s4.6 11.1 10.2 11.1c5.7 0 10.2-5 10.2-11.1.1-6.1-4.5-11.1-10.2-11.1zM140.9 103.9c-5.7 0-10.2 5-10.2 11.1s4.6 11.1 10.2 11.1c5.7 0 10.2-5 10.2-11.1s-4.5-11.1-10.2-11.1z">
+							</path>
+							<path class="st0"
+							      d="M189.5 20h-134C44.2 20 35 29.2 35 40.6v135.2c0 11.4 9.2 20.6 20.5 20.6h113.4l-5.3-18.5 12.8 11.9 12.1 11.2 21.5 19V40.6c0-11.4-9.2-20.6-20.5-20.6zm-38.6 130.6s-3.6-4.3-6.6-8.1c13.1-3.7 18.1-11.9 18.1-11.9-4.1 2.7-8 4.6-11.5 5.9-5 2.1-9.8 3.5-14.5 4.3-9.6 1.8-18.4 1.3-25.9-.1-5.7-1.1-10.6-2.7-14.7-4.3-2.3-.9-4.8-2-7.3-3.4-.3-.2-.6-.3-.9-.5-.2-.1-.3-.2-.4-.3-1.8-1-2.8-1.7-2.8-1.7s4.8 8 17.5 11.8c-3 3.8-6.7 8.3-6.7 8.3-22.1-.7-30.5-15.2-30.5-15.2 0-32.2 14.4-58.3 14.4-58.3 14.4-10.8 28.1-10.5 28.1-10.5l1 1.2c-18 5.2-26.3 13.1-26.3 13.1s2.2-1.2 5.9-2.9c10.7-4.7 19.2-6 22.7-6.3.6-.1 1.1-.2 1.7-.2 6.1-.8 13-1 20.2-.2 9.5 1.1 19.7 3.9 30.1 9.6 0 0-7.9-7.5-24.9-12.7l1.4-1.6s13.7-.3 28.1 10.5c0 0 14.4 26.1 14.4 58.3 0 0-8.5 14.5-30.6 15.2z">
+							</path>
+						</svg>
+					</div>
+				</div>
+				<div class="text">
+					<div class="top-text">
+													<span>Bize Katıl</span>
+											</div>
+					
+					<div class="bottom-text">
+						<div class="reel-1">
+															discord.gg/elmasoyuncu													</div>
+						<div class="reel-1">
+							Katılmak için tıklayın!						</div>
+					</div>
+				</div>
+			</div>
+		</a>
+	</div>
 </div>
-</section>
-
-<section id="store" class="page">
+<div class="coldfire-navbar-menu">
+	<div class="nav-header">
+		<div class="nav-header-text theme-text">Elmas Oyuncu</div>
+		<div id="nav-header-close" class="nav-header-close btn btn-secondary ml-4"><i class="fa-solid fa-xmark"></i></div>
+	</div>
+	<ul>
+									<li class="nav-item active">
+					<a class="nav-link" href="/" >
+						<span class="nav-link-icon d-md-none d-lg-inline-block">
+							<i class="fas fa-home" style="font-size: 1.125rem;"></i>
+						</span>
+						<span class="nav-link-title">
+							Anasayfa						</span>
+					</a>
+				</li>
+												<li class="nav-item ">
+					<a class="nav-link" href="/store" >
+						<span class="nav-link-icon d-md-none d-lg-inline-block">
+							<i class="fas fa-shopping-cart" style="font-size: 1.125rem;"></i>
+						</span>
+						<span class="nav-link-title">
+							Mağaza						</span>
+					</a>
+				</li>
+												<li class="nav-item ">
+					<a class="nav-link" href="/help" >
+						<span class="nav-link-icon d-md-none d-lg-inline-block">
+							<i class="fas fa-question-circle" style="font-size: 1.125rem;"></i>
+						</span>
+						<span class="nav-link-title">
+							Yardım						</span>
+					</a>
+				</li>
+												<li class="nav-item ">
+					<a class="nav-link" href="/support/tickets" >
+						<span class="nav-link-icon d-md-none d-lg-inline-block">
+							<i class="fas fa-life-ring" style="font-size: 1.125rem;"></i>
+						</span>
+						<span class="nav-link-title">
+							Destek						</span>
+					</a>
+				</li>
+							
+		<div class="divider"></div>
+					<li class="nav-item">
+				<a class="nav-link bottom-nav" href="/login/">
+					<span data-toggle="tooltip" data-placement="right" data-offset="0 10px" title="Giriş Yap"><i class="fa-solid fa-arrow-right-to-bracket"></i></span> Giriş Yap				</a>
+			</li>
+							<li class="nav-item">
+					<a class="nav-link bottom-nav" href="/register/">
+						<span data-toggle="tooltip" data-placement="right" data-offset="0 10px" title="Kayıt Ol"><i class="fa-solid fa-user-plus"></i></span> Kayıt Ol					</a>
+				</li>
+						</ul>
+</div>
+<div class="overlay"></div>
+<div class="container top-container mb-4">
+	<div class="row">
+		<div class="col-lg-9">
+			<div class="card mb-2 welcome-card">
+				<div class="card-body">
+					<div class="welcome-card-flex">
+													<div class="welcome-av-col">
+								<picture>
+									<source srcset="none" media="(max-width: 767px)">
+									<source srcset="https://s.namemc.com/3d/skin/body.png?id=8223f53ee9430528&model=classic&theta=32&phi=19&time=90&width=150&height=200" media="(min-width: 768px)">
+									<img src="https://s.namemc.com/3d/skin/body.png?id=8223f53ee9430528&model=classic&theta=32&phi=19&time=90&width=150&height=200" alt="Avatar" class="welcome-avatar" height="160px" width="auto"/>
+								</picture>
+							</div>
+												<div class="welcome-text-col">
+							<span class="welcome-title">Elmas Oyuncu</span><br/>
+							<span class="welcome-text">Topluluğumuza katılmak için lütfen giriş yapın veya kaydolun.</span><br/>
+						</div>
+						<div class="welcome-lr-col">
+							<a class="btn btn-theme" href="/login/" target="">Giriş Yap</a>
+															<a class="btn btn-theme" href="/register/" target="">Kayıt Ol</a>
+													</div>
+					</div>
+				</div>
+			</div>
+		</div>
+					<div class="col-lg-3">
+				<a href="/store/">
+					<div class="store-box mb-2">
+						<div class="store-title">Mağaza</div>
+						<div class="store-icon"><i class="fas fa-shopping-basket"></i></div>
+						<div class="store-subtitle">Alışverişe Başla!</div>
+					</div>
+				</a>
+			</div>
+			</div>
+</div>
+<main class="main" role="main">
+	
 <div class="container">
-<div class="section-title"><h2>MAĞAZA</h2></div>
-<div class="grid">
-<div class="card"><img src="https://i.imgur.com/cCroJSv.png"><div class="card-body"><h3>BoxPvP</h3><p>Kitler ve coin paketleri</p><button class="btn">ÜRÜNLER</button></div></div>
+	<div class="row">
+		<div class="col-md-8">
+							<div class="post-list mb-4">
+																								<div class="post-card-medium">
+								<div class="post-card-img">
+									<a href="/blog/posts/boxmining-duello-guncellemesi/">
+										<img src="/assets/core/images/blog/posts/e5e3cf0ba8981a38bc22f5e8c0c36af6.png" alt="Boxmining Düello Güncellemesi!" loading="lazy">
+									</a>
+								</div>
+								<div class="post-card-body">
+									<div class="post-card-title">
+										<a class="theme-text" href="/blog/posts/boxmining-duello-guncellemesi/">Boxmining Düello Güncellemesi!</a>
+									</div>
+									<div class="post-card-content">⚔️ Duel Sistemi GüncellemesiSunucuda yepyeni 1v1 düello sistemi aktif edildi!&nbsp;🎮 Nasıl Çalışıyor?/duel &lt;oyuncu&gt; Düello menüsünü açar ve davet gönderir.Kabul Etmek için: Sohbetteki [TIKLA] butonunu kullan veya /duel kabul &lt;oyuncu&gt; yaz....</div>
+								</div>
+								<div class="post-card-footer outside-footer">
+									<a href="/members/1/">
+										<img
+	class="lazyload avatar-img"
+	data-src="https://cravatar.eu/helmavatar/Cebels/128.png"
+	src="/assets/core/images/loaders/head.png"
+	alt="Cebels"	width="40px"	height="40px">									</a>
+									<div class="full-post-info ml-3 flex-grow-1 mr-3">
+										<div class="full-post-author">
+											<a class="username" href="/members/1/">Cebels</a>
+										</div>
+										<div class="small">2 Ara 2025 18:26</div>
+									</div>
+									<div class="readtime">
+										<a href="/blog/posts/boxmining-duello-guncellemesi/">Devamını Oku</a>
+									</div>
+								</div>
+							</div>
+															</div>
+				<div class="pt-4 pb-2 w-full mb-4" style="display: flex; justify-content: center">
+						<ul class="pagination ">
+		<li class="page-item">
+			<a class="page-link" href="#!" tabindex="-1">
+				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M15 6l-6 6l6 6"></path></svg>
+			</a>
+		</li>
+		
+																																		<li class="page-item active" aria-current="page" >
+					<a class="page-link" href="?page=1">1</a>
+				</li>
+																																
+		<li class="page-item">
+			<a class="page-link" href="#!" aria-disabled="true">
+				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M9 6l6 6l-6 6"></path></svg>
+			</a>
+		</li>
+	</ul>
+				</div>
+					</div>
+					<div class="col-md-4">
+																																						<div class="mb-4">
+							<a href="/store/products/25/" class="sidebar-store-card">
+								<div class="sidebar-store-card-content">
+									<div class="sidebar-store-card-title">
+										Fırsat Ürünü									</div>
+									<div class="sidebar-store-card-product">
+										<img class="mb-3" src="/assets/core/images/store/products/208d758f0ab1d48237c7d4455ea5ce15.png" alt="ElmasVIP+" width="190px">
+									</div>
+									<div class="sidebar-store-card-detail">
+										<div class="row">
+											<div class="col">
+												<span class="product-name">
+													ElmasVIP+												</span>
+											</div>
+											<div class="col-auto">
+												<div class="price">
+																											<span class="price">130 Kredi</span>
+																									</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</a>
+						</div>
+													
+								
+															<div class="card mb-3">
+							<div class="card-header">
+								<div class="row">
+									<div class="col">
+										<span>En Çok Kredi Yükleyenler</span>
+									</div>
+									<div class="col-auto">
+										<span>(Bu ay)</span>
+									</div>
+								</div>
+							</div>
+							<div class="card-body p-0">
+								<div class="table-responsive">
+									<table class="table table-hover">
+										<thead>
+										<tr>
+											<th>Kullanıcı Adı</th>
+											<th class="text-right">Toplam</th>
+										</tr>
+										</thead>
+										<tbody>
+																					<tr>
+												<td>
+													<a href="/members/230948/">
+														<img
+	class="lazyload avatar avatar-xs me-2"
+	data-src="https://cravatar.eu/helmavatar/gerginobez/128.png"
+	src="/assets/core/images/loaders/head.png"
+	alt="gerginobez"		>														
+														gerginobez													</a>
+												</td>
+												<td class="text-right">2,400 ₺</td>
+											</tr>
+																					<tr>
+												<td>
+													<a href="/members/207825/">
+														<img
+	class="lazyload avatar avatar-xs me-2"
+	data-src="https://cravatar.eu/helmavatar/Sivoxi00/128.png"
+	src="/assets/core/images/loaders/head.png"
+	alt="Sivoxi00"		>														
+														Sivoxi00													</a>
+												</td>
+												<td class="text-right">305 ₺</td>
+											</tr>
+																					<tr>
+												<td>
+													<a href="/members/217447/">
+														<img
+	class="lazyload avatar avatar-xs me-2"
+	data-src="https://cravatar.eu/helmavatar/ekmekcigeldi/128.png"
+	src="/assets/core/images/loaders/head.png"
+	alt="ekmekcigeldi"		>														
+														ekmekcigeldi													</a>
+												</td>
+												<td class="text-right">240 ₺</td>
+											</tr>
+																					<tr>
+												<td>
+													<a href="/members/174532/">
+														<img
+	class="lazyload avatar avatar-xs me-2"
+	data-src="https://cravatar.eu/helmavatar/egezy/128.png"
+	src="/assets/core/images/loaders/head.png"
+	alt="egezy"		>														
+														egezy													</a>
+												</td>
+												<td class="text-right">235 ₺</td>
+											</tr>
+																					<tr>
+												<td>
+													<a href="/members/216276/">
+														<img
+	class="lazyload avatar avatar-xs me-2"
+	data-src="https://cravatar.eu/helmavatar/TheSanta/128.png"
+	src="/assets/core/images/loaders/head.png"
+	alt="TheSanta"		>														
+														TheSanta													</a>
+												</td>
+												<td class="text-right">130 ₺</td>
+											</tr>
+																				</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+													
+															<div class="card mb-3">
+							<div class="card-header">
+								<span>Son Kredi Yükleyenler</span>
+							</div>
+							<div class="card-body p-0">
+								<div class="table-responsive">
+									<table class="table table-hover">
+										<thead>
+										<tr>
+											<th>Kullanıcı Adı</th>
+											<th class="text-right">Miktar</th>
+										</tr>
+										</thead>
+										<tbody>
+																					<tr>
+												<td>
+													<img
+	class="lazyload avatar avatar-xs me-2"
+	data-src="https://cravatar.eu/helmavatar/gerginobez/128.png"
+	src="/assets/core/images/loaders/head.png"
+	alt="gerginobez"		>													
+													gerginobez												</td>
+												<td class="text-right">2,400 ₺</td>
+											</tr>
+																					<tr>
+												<td>
+													<img
+	class="lazyload avatar avatar-xs me-2"
+	data-src="https://cravatar.eu/helmavatar/ekmekcigeldi/128.png"
+	src="/assets/core/images/loaders/head.png"
+	alt="ekmekcigeldi"		>													
+													ekmekcigeldi												</td>
+												<td class="text-right">240 ₺</td>
+											</tr>
+																					<tr>
+												<td>
+													<img
+	class="lazyload avatar avatar-xs me-2"
+	data-src="https://cravatar.eu/helmavatar/Sovarant/128.png"
+	src="/assets/core/images/loaders/head.png"
+	alt="Sovarant"		>													
+													Sovarant												</td>
+												<td class="text-right">10 ₺</td>
+											</tr>
+																					<tr>
+												<td>
+													<img
+	class="lazyload avatar avatar-xs me-2"
+	data-src="https://cravatar.eu/helmavatar/Sovarant/128.png"
+	src="/assets/core/images/loaders/head.png"
+	alt="Sovarant"		>													
+													Sovarant												</td>
+												<td class="text-right">100 ₺</td>
+											</tr>
+																					<tr>
+												<td>
+													<img
+	class="lazyload avatar avatar-xs me-2"
+	data-src="https://cravatar.eu/helmavatar/yufusss/128.png"
+	src="/assets/core/images/loaders/head.png"
+	alt="yufusss"		>													
+													yufusss												</td>
+												<td class="text-right">70 ₺</td>
+											</tr>
+																				</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+													
+								
+															<iframe class="lazyload" data-src="https://discordapp.com/widget?id=1074025109205033080&theme=dark" width="100%" height="500" allowtransparency="true" frameborder="0"></iframe>
+												</div>
+			</div>
 </div>
-</div>
-</section>
+</main>
+<div class="footer-spacer"></div>
+<div class="footer large-footer">
+	<div class="top-section">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-5 footer-col footer-about">
+					<div class="footer-text-header" style="font-size: 1.125rem;">Hakkımızda</div>
+					<div>
+													Elmas Oyuncu											</div>
 
-<section id="wiki" class="page">
-<div class="container wiki">
-<div class="wiki-sidebar">
-<div class="wiki-link active">Genel Bilgiler</div>
-<div class="wiki-link">Oyuna Başlama</div>
-<div class="wiki-link">Kurallar</div>
-<div class="wiki-link">Rütbeler</div>
-<div class="wiki-link">Teknik</div>
-<div class="wiki-link">Destek</div>
+					<div class="d-flex align-items-center mt-3">
+													<div class="dropdown dropup">
+								<button class="btn btn-secondary dropdown-toggle" type="button" id="languageMenu" data-toggle="dropdown" aria-expanded="false">
+									Türkçe								</button>
+								<ul class="dropdown-menu" aria-labelledby="languageMenu">
+																			<a class="dropdown-item " href="?lang=cs">
+											Čeština										</a>
+																			<a class="dropdown-item " href="?lang=de">
+											Deutsch										</a>
+																			<a class="dropdown-item " href="?lang=en">
+											English										</a>
+																			<a class="dropdown-item " href="?lang=es">
+											Español										</a>
+																			<a class="dropdown-item " href="?lang=fr">
+											Français										</a>
+																			<a class="dropdown-item " href="?lang=hi">
+											हिन्दी										</a>
+																			<a class="dropdown-item " href="?lang=hu">
+											Magyar										</a>
+																			<a class="dropdown-item " href="?lang=it">
+											Italiano										</a>
+																			<a class="dropdown-item " href="?lang=ja">
+											日本語										</a>
+																			<a class="dropdown-item " href="?lang=nl">
+											Nederlands										</a>
+																			<a class="dropdown-item " href="?lang=no">
+											Norsk										</a>
+																			<a class="dropdown-item " href="?lang=pl">
+											Polski										</a>
+																			<a class="dropdown-item " href="?lang=pt_BR">
+											Português (Brasil)										</a>
+																			<a class="dropdown-item " href="?lang=ro">
+											Română										</a>
+																			<a class="dropdown-item " href="?lang=ru">
+											Русский										</a>
+																			<a class="dropdown-item " href="?lang=sv">
+											Svenska										</a>
+																			<a class="dropdown-item active" href="?lang=tr">
+											Türkçe										</a>
+																			<a class="dropdown-item " href="?lang=vi">
+											Tiếng Việt										</a>
+																			<a class="dropdown-item " href="?lang=zh_CN">
+											中文										</a>
+																	</ul>
+							</div>
+												
+											</div>
+				</div>
+				
+									<div class="col-lg-2 footer-col">
+						<div class="footer-text-header" style="font-size: 1.125rem;">Hızlı Menü</div>
+																					<a href="/" class="footer-link" >
+																			<i class="fas fa-home me-1"></i>
+																		Anasayfa								</a>
+															<a href="/store" class="footer-link" >
+																			<i class="fas fa-shopping-cart me-1"></i>
+																		Mağaza								</a>
+															<a href="/help" class="footer-link" >
+																			<i class="fas fa-question-circle me-1"></i>
+																		Yardım								</a>
+															<a href="/support/tickets" class="footer-link" >
+																			<i class="fas fa-life-ring me-1"></i>
+																		Destek								</a>
+																		</div>
+									<div class="col-lg-2 footer-col">
+						<div class="footer-text-header" style="font-size: 1.125rem;">Sosyal Medya</div>
+																					<a href="" class="footer-link" target="_blank">
+																			<i class="fab fa-youtube me-1"></i>
+																		YouTube								</a>
+															<a href="https://discord.gg/elmasoyuncu" class="footer-link" target="_blank">
+																			<i class="fab fa-discord me-1"></i>
+																		Discord								</a>
+																		</div>
+									<div class="col-lg-2 footer-col">
+						<div class="footer-text-header" style="font-size: 1.125rem;">Bağlantılar</div>
+																					<a href="/hizmet-sartlari" class="footer-link" >
+																		Hizmet Şartları								</a>
+															<a href="/iptal-iade-sozlesmesi" class="footer-link" >
+																		İptal / İade Sözleşmesi								</a>
+															<a href="/kvkk" class="footer-link" >
+																		KVKK								</a>
+															<a href="/gizlilik-sozlesmesi" class="footer-link" >
+																		Gizlilik Sözleşmesi								</a>
+																		</div>
+							</div>
+		</div>
+	</div>
+	<div class="bottom-bar">
+		<div class="container">
+			<div class="footer-copyright">
+				<span class="copyright-txt"><i class="fa-solid fa-copyright"></i> 2026					<span class="site">Elmas Oyuncu</span>
+				</span>
+																													<div class="icon-box">
+						<a class="icon" href="https://discord.gg/elmasoyuncu" target="_blank"><i id="social-tw" class="fa-brands fa-discord"></i></a>
+					</div>
+								
+									<div class="d-block copyright-txt mt-1">We are in no way affiliated with or endorsed by Mojang.</div>
+							</div>
+			
+			<div class="d-inline-flex float-right">
+				<div class="footer-copyright">
+					<div class="copyright-txt">
+						Designed by ColdFire
+					</div>
+					<div class="copyright-txt">
+						<a href="https://www.leaderos.com.tr" target="_blank" id="powered_by_leaderos">Powered by <strong>LeaderOS</strong></a><script>
+						var is_error;
+						var interval = setInterval(function() {
+							if (is_error) {
+								clearInterval(interval);
+								return false;
+							}
+							
+							var brand_el = document.getElementById("powered_by_leaderos");
+							var is_brand_visible = true;
+							
+							if (brand_el) {
+								var style = window.getComputedStyle(brand_el);
+								if (brand_el.offsetParent === null) {
+									is_brand_visible = false;
+								} else if (style.display === "none") {
+									is_brand_visible = false;
+								} else if (style.visibility === "hidden") {
+									is_brand_visible = false;
+								}
+							} else {
+								is_brand_visible = false;
+							}
+							
+							if (!is_brand_visible) {
+								is_error = true;
+								document.body.innerHTML = "<iframe src='https://www.leaderos.com.tr/powered_by_leaderos.php' style='border: 0; position:fixed; top:0; left:0; right:0; bottom:0; width:100%; height:100%'></iframe>";
+							}
+						}, 1000);
+					</script>					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
-<div class="wiki-content">
-<h2>BlueProject Wiki</h2>
-<p>BlueProject, adil oyun anlayışını merkezine alan modern bir Minecraft sunucusudur.</p>
-<ul style="margin-top:15px;color:var(--muted)">
-<li>✔ Java Edition desteklenir</li>
-<li>✔ Hileye sıfır tolerans</li>
-<li>✔ Dengeli ekonomi</li>
-<li>✔ Aktif yetkili ekibi</li>
-</ul>
-</div>
-</div>
-</section>
-
-<section id="faq" class="page">
-<div class="container">
-<div class="section-title"><h2>SIKÇA SORULAN SORULAR</h2></div>
-
-<div class="faq-item">
-<div class="faq-header" onclick="toggleFAQ(this)">BlueProject nedir?</div>
-<div class="faq-content">Adil ve eğlenceli bir Minecraft sunucusudur.</div>
-</div>
-
-<div class="faq-item">
-<div class="faq-header" onclick="toggleFAQ(this)">Hangi sürüm destekleniyor?</div>
-<div class="faq-content">Minecraft Java Edition (1.16.5+).</div>
-</div>
-
-<div class="faq-item">
-<div class="faq-header" onclick="toggleFAQ(this)">Hile serbest mi?</div>
-<div class="faq-content">Hayır. Tüm hileler kalıcı ban sebebidir.</div>
-</div>
-
-</div>
-</section>
-
-<footer>
-<img src="https://i.imgur.com/3bmo64B.png">
-<p>© 2025 BlueProject. Tüm hakları saklıdır.</p>
-<span>POWERED BY BLUEPROJECT</span>
-</footer>
 
 <script>
-function show(id){
-document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-document.getElementById(id).classList.add('active');
-window.scrollTo(0,0);
-}
-
-function copyIP(){
-navigator.clipboard.writeText("oyna.blueproject.tr");
-const t=document.getElementById("toast");
-t.style.display="block";
-setTimeout(()=>t.style.display="none",3000);
-}
-
-function toggleFAQ(el){
-el.parentElement.classList.toggle("open");
-}
-
-const c=document.getElementById("stars"),x=c.getContext("2d");
-function r(){c.width=innerWidth;c.height=innerHeight}
-window.onresize=r;r();
-let s=[...Array(160)].map(()=>({x:Math.random()*c.width,y:Math.random()*c.height,r:Math.random()*2}));
-(function a(){
-x.clearRect(0,0,c.width,c.height);
-s.forEach(e=>{
-e.y-=.3;if(e.y<0)e.y=c.height;
-x.fillStyle="white";
-x.beginPath();x.arc(e.x,e.y,e.r,0,7);x.fill();
-});
-requestAnimationFrame(a);
-})();
+	var lang = {
+		credits: "%credit% kredi",
+		search: "Ara...",
+		loading: "Yükleniyor...",
+		confirm_delete: "Silmek istediğinizden emin misiniz?",
+		player_not_found: "Oyuncu bulunamadı!",
+		play_again: "Tekrar oyna",
+		spinning: "Çeviriliyor...",
+		apply: "Uygula",
+		remove: "Sil",
+		alert_btn_ok: "OK",
+		alert_btn_cancel: "İptal",
+		alert_btn_confirm: "Onayla",
+		alert_btn_buy_credit: "Kredi Yükle",
+		alert_title_success: "Başarılı!",
+		alert_title_error: "Hata!",
+		alert_title_warning: "Uyarı!",
+		alert_title_you_lost: "Kaybettin!",
+		alert_title_you_win: "Kazandınız!",
+		alert_message_server_address_copied: "Sunucu adresi kopyalandı!",
+		alert_message_something_went_wrong: "Bir şeyler yanlış. Sonra tekrar deneyin.",
+		alert_message_lottery_error_duration: "Tekrar çevirmek için %date%'e kadar beklemeniz gerekiyor.",
+		alert_message_lottery_you_lost: "Üzgünüm, kaybettiniz. Sonra tekrar deneyin.",
+		alert_message_lottery_you_win: "Tebrikler! <strong>%prize%</strong> kazandınız!",
+		alert_message_lottery_you_win_chest: "Ürün sandığınıza eklendi.",
+		alert_message_lottery_you_win_credit: "Mevcut Kredi: %credit%",
+		alert_message_lottery_credit_error: "Oynamak için yeterli krediniz bulunmuyor.",
+		alert_message_chest_confirm: "Onaylamadan önce oyunda olduğunuzdan emin olun, aksi takdirde ürün size ulaşmayabilir!",
+		alert_message_chest_sending: "Teslimat işlemi devam ediyor, lütfen bekleyin ve sayfadan ayrılmayın...",
+		alert_message_chest_sent: "Ürün başarıyla teslim edildi, Hayırlı Olsun!",
+		alert_message_chest_server_error: "Sunucuya bağlanırken bir sorun yaşandı, lütfen daha sonra tekrar deneyin.",
+		alert_message_chest_amount_error: "En fazla %amount% adet teslim alabilirsin!",
+		alert_message_login: "Bu işlemi yapabilmek için giriş yapın.",
+		help_voting_success: "Oy kullanımı başarıyla tamamlandı!",
+		alert_message_checkout_credit_error: "Yeterli krediniz bulunmuyor.",
+		alert_message_checkout_success: "Ödeme işlemi tamamlandı ve ürün sandığınıza eklendi.",
+		alert_message_checkout_quantity_error: "Geçerli bir adet giriniz!",
+		alert_message_checkout_stock_error: "Stok nedeniyle bu üründen daha fazla ekleyemezsin!",
+		alert_message_checkout_stock_error2: "Stokta yeterli ürün yok!",
+		alert_message_checkout_cart_empty_error: "Sepetiniz boş!",
+		alert_message_checkout_coupon_invalid: "Kupon geçersiz!",
+		alert_message_checkout_coupon_invalid_for_cart: "Bu kupon, sepetiniz için uygun değil!",
+		alert_message_checkout_coupon_used: "Bu kuponu daha önceden kullandınız!",
+		alert_message_checkout_coupon_expired: "Bu kuponun süresi bitmiş!",
+		alert_message_checkout_coupon_login: "Kupon kullanmak için giriş yapmanız gerekiyor!",
+		alert_message_checkout_coupon_success: "Kupon başarıyla uygulandı!",
+		alert_message_checkout_coupon_price: "Bu kuponu kullanabilmek için sepetiniz en az %amount% kredi değerinde olmalıdır!",
+		alert_message_not_found: "Not found!",
+		limited_stock: "Sınırlı Stok!",
+		out_of_stock: "Stok Yok!"
+	}
 </script>
+
+
+<script src="/assets/cobalt/js/prism.1770076214.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="/assets/cobalt/js/spoiler.1770076216.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.2.0/dist/sweetalert2.all.min.js" integrity="sha256-tGZXBB9uK3MK1zLsI8b/1gZYQcBl8TMTi52kA2RmEKc=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/tsparticles@1.39.3/tsparticles.min.js" integrity="sha256-CGTXk49NPei0eRo1PL2NVebBLfmfE7PQlx0ktUIpM+o=" crossorigin="anonymous"></script>
+<script>
+	var particles = "yes";
+	var swal_server_copy = "Now go join the server!";
+	var discord_server = "1074025109205033080";
+	var mc_server = "mc.elmasoyuncu.me";
+	var ds_box = "yes";
+	var ds_breakpoint = "1100";
+	var users_online = "Aktif";
+	var user_online = "Aktif";
+	var players_online = "oyuncu aktif";
+	var player_online = "oyuncu aktif";
+	var server_offline = "Server is offline";
+</script>
+<script>
+	var
+		siteName = "Elmas Oyuncu",
+		siteURL = "/",
+		fullSiteUrl = "https://elmasoyuncu.com",
+		page = "home",
+		pjsPath = "/assets/cobalt/js/particles-settings.json",
+		debugging = "0",
+		loggedIn = "0",
+		cookie = "0"
+</script>
+<script src="/assets/cobalt/js/core.1770076214.js"></script>
+<script>
+	if (page === 'status') {
+		$("#server2 .server-icon-box").html('<i class="fas fa-bed"></i>');
+	}
+
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-lazyload/16.1.0/lazyload.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/i18n/tr.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery.Marquee/1.5.0/jquery.marquee.min.js"></script>
+
+<script type="text/javascript">
+	var $onlineAPI = 1;
+	var $preloaderStatus = 'false';
+</script>
+<script src="/assets/cobalt/js/main.min.1770076216.js"></script>
+
+
+
 
 </body>
 </html>
